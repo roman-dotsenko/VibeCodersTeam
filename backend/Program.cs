@@ -232,32 +232,32 @@ app.MapGet("/api/users/{userId:guid}/resumes", async (Guid userId, IResumeServic
 .Produces<List<LightResumeApiModel>>(200)
 .Produces(500);
 
-//// Get a specific resume by ID
-//app.MapGet("/api/resumes/{resumeId:guid}", async (Guid resumeId, IResumeService resumeService) =>
-//{
-//    try
-//    {
-//        var resume = await resumeService.GetResumeByIdAsync(resumeId);
-//        return resume is not null 
-//            ? Results.Ok(resume) 
-//            : Results.NotFound(new { message = $"Resume with ID {resumeId} not found" });
-//    }
-//    catch (Exception ex)
-//    {
-//        return Results.Problem(
-//            detail: ex.Message,
-//            statusCode: 500,
-//            title: "Error retrieving resume"
-//        );
-//    }
-//})
-//.WithName("GetResume")
-//.WithTags("Resumes")
-//.WithSummary("Get a specific resume by ID")
-//.WithDescription("Retrieves detailed information about a specific resume including all sections (personal details, education, employment, skills, languages, hobbies)")
-//.Produces<Resume>(200)
-//.Produces(404)
-//.Produces(500);
+// Get a specific resume by ID
+app.MapGet("/api/resumes/{resumeId:guid}", async (Guid resumeId, IResumeService resumeService) =>
+{
+    try
+    {
+        var resume = await resumeService.GetResumeByIdAsync(resumeId);
+        return resume is not null 
+            ? Results.Ok(resume) 
+            : Results.NotFound(new { message = $"Resume with ID {resumeId} not found" });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(
+            detail: ex.Message,
+            statusCode: 500,
+            title: "Error retrieving resume"
+        );
+    }
+})
+.WithName("GetResume")
+.WithTags("Resumes")
+.WithSummary("Get a specific resume by ID")
+.WithDescription("Retrieves detailed information about a specific resume including all sections (personal details, education, employment, skills, languages, hobbies)")
+.Produces<Resume>(200)
+.Produces(404)
+.Produces(500);
 
 // Create a new resume for a user
 app.MapPost("/api/users/{userId:guid}/resumes", async (Guid userId, Resume resume, IResumeService resumeService) =>
