@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/04.ak.12/Documents/VibeCodersTeam/frontend/app/page.tsx"],"sourcesContent":["'use client'\nimport { useTranslation } from \"react-i18next\";\n\nexport default function Home() {\n  return (\n    <div className=\"flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black\">\n     \n    </div>\n  );\n}\n"],"names":[],"mappings":";;;;;AAAA;;AAGe,SAAS;IACtB,qBACE,8OAAC;QAAI,WAAU;;;;;;AAInB","debugId":null}},
+    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":["file:///Users/04.ak.12/Documents/VibeCodersTeam/frontend/node_modules/next/src/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.ts"],"sourcesContent":["module.exports = (\n  require('../../module.compiled') as typeof import('../../module.compiled')\n).vendored['react-ssr']!.ReactJsxDevRuntime\n"],"names":["module","exports","require","vendored","ReactJsxDevRuntime"],"mappings":"AAAAA,OAAOC,OAAO,GACZC,QAAQ,4HACRC,QAAQ,CAAC,YAAY,CAAEC,kBAAkB","ignoreList":[0],"debugId":null}}]
+}

@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/04.ak.12/Documents/VibeCodersTeam/frontend/app/i18n/request.ts"],"sourcesContent":["'use client'\nimport {getRequestConfig} from 'next-intl/server';\nimport {notFound} from 'next/navigation';\n\n// Define supported locales\nconst locales = ['en', 'ua'] as const;\ntype Locale = typeof locales[number];\n\nexport default getRequestConfig(async ({locale}) => {\n  // Validate that the incoming locale is supported\n  if (!locale || !locales.includes(locale as Locale)) {\n    notFound();\n  }\n\n  return {\n    locale: locale!, // Assert locale is not undefined since we checked above\n    messages: (await import(`../../messages/${locale}.json`)).default,\n    timeZone: 'Europe/Kiev'\n  };\n});"],"names":[],"mappings":";;;;AACA;AACA;AAFA;;;AAIA,2BAA2B;AAC3B,MAAM,UAAU;IAAC;IAAM;CAAK;6CAGb,IAAA,uNAAgB,OAAC,OAAO,EAAC,MAAM,EAAC;IAC7C,iDAAiD;IACjD,IAAI,CAAC,UAAU,CAAC,QAAQ,QAAQ,CAAC,SAAmB;QAClD,IAAA,iJAAQ;IACV;IAEA,OAAO;QACL,QAAQ;QACR,UAAU,CAAC;;;;;;;;;kBAAa,CAAC,eAAe,EAAE,OAAO,KAAK,CAAC,CAAC,EAAE,OAAO;QACjE,UAAU;IACZ;AACF","debugId":null}}]
+}
