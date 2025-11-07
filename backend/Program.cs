@@ -69,8 +69,27 @@ builder.Services.AddAuthentication(options =>
     options.ExpireTimeSpan = TimeSpan.FromHours(24);
     options.Events.OnRedirectToLogin = context =>
     {
+        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+        logger.LogWarning(
+            "Authentication required - redirecting to login. Request Path: {RequestPath}, Reason: Cookie authentication failed or missing",
+            context.Request.Path
+        );
         context.Response.StatusCode = 401;
         return Task.CompletedTask;
+    };
+    options.Events.OnValidatePrincipal = async context =>
+    {
+        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+        
+        if (context.Principal?.Identity?.IsAuthenticated != true)
+        {
+            logger.LogWarning(
+                "Cookie validation failed - user not authenticated. Request Path: {RequestPath}",
+                context.Request.Path
+            );
+            context.RejectPrincipal();
+            await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
     };
 })
 .AddGoogle(googleOptions =>
@@ -92,6 +111,38 @@ builder.Services.AddAuthentication(options =>
     googleOptions.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
     googleOptions.ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
     googleOptions.ClaimActions.MapJsonKey("picture", "picture");
+    
+    // Add event handlers for authentication failures
+    googleOptions.Events.OnRemoteFailure = context =>
+    {
+        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+        var errorMessage = context.Failure?.Message ?? "Unknown error";
+        var errorType = context.Failure?.GetType().Name ?? "Unknown";
+        
+        logger.LogError(
+            "Google OAuth authentication failed. Error Type: {ErrorType}, Error Message: {ErrorMessage}, Request Path: {RequestPath}",
+            errorType,
+            errorMessage,
+            context.Request.Path
+        );
+        
+        context.Response.Redirect("/api/auth/login?error=oauth_failed");
+        context.HandleResponse();
+        return Task.CompletedTask;
+    };
+    
+    googleOptions.Events.OnAccessDenied = context =>
+    {
+        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+        logger.LogWarning(
+            "User denied access during Google OAuth authentication. Request Path: {RequestPath}",
+            context.Request.Path
+        );
+        
+        context.Response.Redirect("/api/auth/login?error=access_denied");
+        context.HandleResponse();
+        return Task.CompletedTask;
+    };
 });
 
 builder.Services.AddAuthorization();
@@ -109,8 +160,15 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Login endpoint - redirects to Google
-app.MapGet("/api/auth/login", async (HttpContext context) =>
+app.MapGet("/api/auth/login", async (HttpContext context, ILogger<Program> logger) =>
 {
+    logger.LogInformation(
+        "Login initiated. Request Path: {RequestPath}, Query String: {QueryString}, User Agent: {UserAgent}",
+        context.Request.Path,
+        context.Request.QueryString,
+        context.Request.Headers["User-Agent"].ToString()
+    );
+    
     var properties = new AuthenticationProperties
     {
         RedirectUri = "/api/auth/success"
@@ -121,12 +179,25 @@ app.MapGet("/api/auth/login", async (HttpContext context) =>
 .WithTags("Authentication");
 
 // Success endpoint after login
-app.MapGet("/api/auth/success", (HttpContext context) =>
+app.MapGet("/api/auth/success", (HttpContext context, ILogger<Program> logger) =>
 {
     if (!context.User.Identity?.IsAuthenticated ?? true)
     {
+        logger.LogWarning(
+            "Login success callback failed - user not authenticated after OAuth callback. Request Path: {RequestPath}",
+            context.Request.Path
+        );
         return Results.Redirect("/api/auth/login");
     }
+    
+    var email = context.User.FindFirst(ClaimTypes.Email)?.Value;
+    var name = context.User.FindFirst(ClaimTypes.Name)?.Value;
+    
+    logger.LogInformation(
+        "User successfully authenticated via OAuth. Email: {Email}, Name: {Name}",
+        email ?? "Unknown",
+        name ?? "Unknown"
+    );
     
     // Redirect to frontend home page after successful login
     var frontendUrl = context.RequestServices.GetRequiredService<IConfiguration>()
@@ -138,17 +209,22 @@ app.MapGet("/api/auth/success", (HttpContext context) =>
 .ExcludeFromDescription();
 
 // Get current user info endpoint
-app.MapGet("/api/auth/me", async (HttpContext context, IUserService userService) =>
+app.MapGet("/api/auth/me", async (HttpContext context, IUserService userService, ILogger<Program> logger) =>
 {
     // Log authentication status for debugging
     var isAuth = context.User.Identity?.IsAuthenticated ?? false;
     var cookieHeader = context.Request.Headers["Cookie"].ToString();
-    Console.WriteLine($"Auth check - IsAuthenticated: {isAuth}");
-    Console.WriteLine($"Cookie header: {cookieHeader}");
-    Console.WriteLine($"User claims count: {context.User.Claims.Count()}");
-
+    
     if (!isAuth)
     {
+        logger.LogWarning(
+            "Authentication check failed - user not authenticated. " +
+            "Cookie Present: {CookiePresent}, Claims Count: {ClaimsCount}, Request Path: {RequestPath}, User Agent: {UserAgent}",
+            !string.IsNullOrEmpty(cookieHeader),
+            context.User.Claims.Count(),
+            context.Request.Path,
+            context.Request.Headers["User-Agent"].ToString()
+        );
         return Results.Json(new { isAuthenticated = false }, statusCode: 401);
     }
 
@@ -158,21 +234,45 @@ app.MapGet("/api/auth/me", async (HttpContext context, IUserService userService)
     var surname = context.User.FindFirst(ClaimTypes.Surname)?.Value;
     var picture = context.User.FindFirst("picture")?.Value;
 
-    Console.WriteLine($"Returning user: {name} ({email})");
+    if (string.IsNullOrEmpty(email))
+    {
+        logger.LogError(
+            "Authentication succeeded but email claim is missing. User Name: {UserName}, Claims: {Claims}",
+            name ?? "Unknown",
+            string.Join(", ", context.User.Claims.Select(c => $"{c.Type}={c.Value}"))
+        );
+        return Results.Json(new { 
+            isAuthenticated = false, 
+            error = "Email claim missing" 
+        }, statusCode: 401);
+    }
+
+    logger.LogInformation(
+        "User authenticated successfully. Email: {Email}, Name: {Name}",
+        email,
+        name
+    );
 
     // Get or create user in database
     User? dbUser = null;
-    if (!string.IsNullOrEmpty(email))
+    try
     {
-        try
-        {
-            dbUser = await userService.GetOrCreateUserAsync(email);
-            Console.WriteLine($"Database user ID: {dbUser.Id}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error managing user in database: {ex.Message}");
-        }
+        dbUser = await userService.GetOrCreateUserAsync(email);
+        logger.LogInformation("User loaded from database. User ID: {UserId}", dbUser.Id);
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(
+            ex,
+            "Failed to get or create user in database. Email: {Email}, Error: {ErrorMessage}",
+            email,
+            ex.Message
+        );
+        return Results.Problem(
+            detail: "Failed to retrieve user information",
+            statusCode: 500,
+            title: "Database Error"
+        );
     }
 
     return Results.Ok(new
