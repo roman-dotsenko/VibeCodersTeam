@@ -11,7 +11,7 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IConfigurationSection configuration = builder.Configuration.GetSection("Authentication");
+IConfigurationSection authConfiguration = builder.Configuration.GetSection("Authentication");
 
 // Configure SQL Server Database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -67,8 +67,8 @@ builder.Services.AddAuthentication(options =>
     options.LogoutPath = "/api/auth/logout";
     options.Cookie.Name = "JobHelper.Auth";
     options.Cookie.HttpOnly = false;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Require HTTPS (backend is on HTTPS)
-    options.Cookie.SameSite = SameSiteMode.None; // Allow cross-site for different domains
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // HTTPS only (required for SameSite=None)
+    options.Cookie.SameSite = SameSiteMode.None; // Required for cross-origin requests
     options.Cookie.IsEssential = true; // Mark as essential for GDPR compliance
     options.ExpireTimeSpan = TimeSpan.FromHours(24);
     options.SlidingExpiration = true;
@@ -108,8 +108,8 @@ builder.Services.AddAuthentication(options =>
 })
 .AddGoogle(googleOptions =>
 {
-    googleOptions.ClientId = configuration["Google:ClientId"]!;
-    googleOptions.ClientSecret = configuration["Google:ClientSecret"]!;
+    googleOptions.ClientId = authConfiguration["Google:ClientId"]!;
+    googleOptions.ClientSecret = authConfiguration["Google:ClientSecret"]!;
     googleOptions.CallbackPath = "/api/auth/google/callback";
     
     // Request email scope
@@ -171,6 +171,32 @@ app.MapScalarApiReference();
 
 // IMPORTANT: CORS must be called before Authentication and Authorization
 app.UseCors();
+
+// Add response headers for debugging CORS
+app.Use(async (context, next) =>
+{
+    context.Response.OnStarting(() =>
+    {
+        // Ensure CORS headers are set correctly
+        if (context.Request.Headers.ContainsKey("Origin"))
+        {
+            var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+            logger.LogInformation(
+                "CORS Request - Origin: {Origin}, Method: {Method}, Path: {Path}, " +
+                "Response Headers: Access-Control-Allow-Origin={AllowOrigin}, " +
+                "Access-Control-Allow-Credentials={AllowCredentials}",
+                context.Request.Headers["Origin"],
+                context.Request.Method,
+                context.Request.Path,
+                context.Response.Headers["Access-Control-Allow-Origin"].ToString(),
+                context.Response.Headers["Access-Control-Allow-Credentials"].ToString()
+            );
+        }
+        return Task.CompletedTask;
+    });
+    await next();
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 
