@@ -45,7 +45,10 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins(builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new[] { "http://localhost:3000" })
+        var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() 
+            ?? new[] { "http://localhost:3000" };
+        
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -63,8 +66,8 @@ builder.Services.AddAuthentication(options =>
     options.LoginPath = "/api/auth/login";
     options.LogoutPath = "/api/auth/logout";
     options.Cookie.Name = "JobHelper.Auth";
-    options.Cookie.HttpOnly = true;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Require HTTPS (backend is on HTTPS)
+    options.Cookie.HttpOnly = false;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Require HTTPS (backend is on HTTPS)
     options.Cookie.SameSite = SameSiteMode.None; // Allow cross-site for different domains
     options.Cookie.IsEssential = true; // Mark as essential for GDPR compliance
     options.ExpireTimeSpan = TimeSpan.FromHours(24);
@@ -166,6 +169,7 @@ app.MapOpenApi();
 // Add Scalar API documentation UI (modern alternative to Swagger UI)
 app.MapScalarApiReference();
 
+// IMPORTANT: CORS must be called before Authentication and Authorization
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
