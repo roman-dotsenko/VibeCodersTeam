@@ -102,10 +102,7 @@ var app = builder.Build();
 app.MapOpenApi();
 
 // Add Scalar API documentation UI (modern alternative to Swagger UI)
-if (app.Environment.IsDevelopment())
-{
-    app.MapScalarApiReference();
-}
+app.MapScalarApiReference();
 
 app.UseCors();
 app.UseAuthentication();
