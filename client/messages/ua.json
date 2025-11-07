@@ -5,5 +5,9 @@
   },
   "HomePage": {
     "title": "Привіт світ!"
+  },
+  "DashboardPage": {
+    "title": "Ласкаво просимо до панелі",
+    "createResume": "Створити нове резюме"
   }
 }

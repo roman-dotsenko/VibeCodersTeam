@@ -1,8 +1,5 @@
 'use client'
-import { useTranslation } from "@/node_modules/react-i18next";
 import {useTranslations} from 'next-intl';
-import LanguageSwitcher from "../components/Language/LanguageSwitcher";
-import Header from "../components/Header/Header";
 
 export default function Home() {
   const t = useTranslations('HomePage');
