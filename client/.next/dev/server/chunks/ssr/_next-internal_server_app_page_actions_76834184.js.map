@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/04.ak.12/Documents/VibeCodersTeam/frontend/.next-internal/server/app/page/actions.js%20%28server%20actions%20loader%29"],"sourcesContent":["export {default as '7fa44e62186317a3f1ccf36b0d7c03a92c941aa0b1'} from 'ACTIONS_MODULE0'\n"],"names":[],"mappings":";AAAA","debugId":null}}]
+}
