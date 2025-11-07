@@ -191,6 +191,7 @@ app.MapGet("/api/auth/login", async (HttpContext context, ILogger<Program> logge
 })
 .WithTags("Authentication");
 
+
 // OAuth callback endpoint - handles the redirect from Google
 app.MapGet("/api/auth/callback", async (HttpContext context, IUserService userService, ILogger<Program> logger) =>
 {
