@@ -175,26 +175,40 @@ app.UseCors();
 // Add response headers for debugging CORS
 app.Use(async (context, next) =>
 {
-    context.Response.OnStarting(() =>
+    // Log the incoming request
+    if (context.Request.Headers.ContainsKey("Origin"))
     {
-        // Ensure CORS headers are set correctly
-        if (context.Request.Headers.ContainsKey("Origin"))
-        {
-            var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
-            logger.LogInformation(
-                "CORS Request - Origin: {Origin}, Method: {Method}, Path: {Path}, " +
-                "Response Headers: Access-Control-Allow-Origin={AllowOrigin}, " +
-                "Access-Control-Allow-Credentials={AllowCredentials}",
-                context.Request.Headers["Origin"],
-                context.Request.Method,
-                context.Request.Path,
-                context.Response.Headers["Access-Control-Allow-Origin"].ToString(),
-                context.Response.Headers["Access-Control-Allow-Credentials"].ToString()
-            );
-        }
-        return Task.CompletedTask;
-    });
+        var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+        logger.LogInformation(
+            "CORS Request received - Origin: {Origin}, Method: {Method}, Path: {Path}",
+            context.Request.Headers["Origin"],
+            context.Request.Method,
+            context.Request.Path
+        );
+    }
+    
     await next();
+    
+    // Log the response headers after CORS middleware has processed them
+    if (context.Request.Headers.ContainsKey("Origin"))
+    {
+        var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+        var allowOrigin = context.Response.Headers["Access-Control-Allow-Origin"].ToString();
+        var allowCredentials = context.Response.Headers["Access-Control-Allow-Credentials"].ToString();
+        
+        logger.LogInformation(
+            "CORS Response - Origin: {Origin}, Method: {Method}, Path: {Path}, " +
+            "Access-Control-Allow-Origin: '{AllowOrigin}', " +
+            "Access-Control-Allow-Credentials: '{AllowCredentials}', " +
+            "Status: {StatusCode}",
+            context.Request.Headers["Origin"],
+            context.Request.Method,
+            context.Request.Path,
+            string.IsNullOrEmpty(allowOrigin) ? "(not set)" : allowOrigin,
+            string.IsNullOrEmpty(allowCredentials) ? "(not set)" : allowCredentials,
+            context.Response.StatusCode
+        );
+    }
 });
 
 app.UseAuthentication();
