@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "21l8CHOD9nY=",
+  "success": true,
+  "projectFilePath": "C:\\Hackaton\\JobHelper\\backend\\backend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\romad\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.0-rc.2.25502.107\\microsoft.aspnetcore.openapi.10.0.0-rc.2.25502.107.nupkg.sha512",
+    "C:\\Users\\romad\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
