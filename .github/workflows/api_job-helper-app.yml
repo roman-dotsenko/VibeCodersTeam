@@ -24,12 +24,10 @@ jobs:
           dotnet-version: '10.x'
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
-        working-directory: ./backend/JobHelper.csproj
+        run: dotnet build ./backend/JobHelper.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{github.workspace}}/myapp
-        working-directory: ./backend/JobHelper.csproj
+        run: dotnet publish ./backend/JobHelper.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -65,4 +63,5 @@ jobs:
           slot-name: 'Production'
           package: .
           
+
 
