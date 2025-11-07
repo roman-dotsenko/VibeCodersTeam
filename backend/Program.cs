@@ -65,8 +65,11 @@ builder.Services.AddAuthentication(options =>
     options.Cookie.Name = "JobHelper.Auth";
     options.Cookie.HttpOnly = true;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Require HTTPS (backend is on HTTPS)
-    options.Cookie.SameSite = SameSiteMode.None; // Allow cross-site for different ports
+    options.Cookie.SameSite = SameSiteMode.None; // Allow cross-site for different domains
+    options.Cookie.IsEssential = true; // Mark as essential for GDPR compliance
     options.ExpireTimeSpan = TimeSpan.FromHours(24);
+    options.SlidingExpiration = true;
+    
     options.Events.OnRedirectToLogin = context =>
     {
         var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
@@ -89,6 +92,14 @@ builder.Services.AddAuthentication(options =>
             );
             context.RejectPrincipal();
             await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+        else
+        {
+            logger.LogInformation(
+                "Cookie validation successful. User: {Email}, Claims: {ClaimsCount}",
+                context.Principal.FindFirst(ClaimTypes.Email)?.Value ?? "Unknown",
+                context.Principal.Claims.Count()
+            );
         }
     };
 })
@@ -171,14 +182,69 @@ app.MapGet("/api/auth/login", async (HttpContext context, ILogger<Program> logge
     
     var properties = new AuthenticationProperties
     {
-        RedirectUri = "/api/auth/success"
+        RedirectUri = "/api/auth/callback",
+        IsPersistent = true,
+        AllowRefresh = true
     };
     
     return Results.Challenge(properties, new[] { GoogleDefaults.AuthenticationScheme });
 })
 .WithTags("Authentication");
 
-// Success endpoint after login
+// OAuth callback endpoint - handles the redirect from Google
+app.MapGet("/api/auth/callback", async (HttpContext context, IUserService userService, ILogger<Program> logger) =>
+{
+    var config = context.RequestServices.GetRequiredService<IConfiguration>();
+    var frontendUrl = config.GetSection("Cors:AllowedOrigins").Get<string[]>()?[0] ?? "http://localhost:3000";
+    
+    if (!context.User.Identity?.IsAuthenticated ?? true)
+    {
+        logger.LogWarning(
+            "OAuth callback failed - user not authenticated after OAuth callback. Request Path: {RequestPath}",
+            context.Request.Path
+        );
+        
+        // Redirect to frontend with error
+        return Results.Redirect($"{frontendUrl}/login?error=auth_failed");
+    }
+    
+    var email = context.User.FindFirst(ClaimTypes.Email)?.Value;
+    var name = context.User.FindFirst(ClaimTypes.Name)?.Value;
+    
+    logger.LogInformation(
+        "User successfully authenticated via OAuth. Email: {Email}, Name: {Name}, Claims: {Claims}",
+        email ?? "Unknown",
+        name ?? "Unknown",
+        string.Join(", ", context.User.Claims.Select(c => $"{c.Type}={c.Value}"))
+    );
+    
+    // Get or create user in database
+    try
+    {
+        if (!string.IsNullOrEmpty(email))
+        {
+            var dbUser = await userService.GetOrCreateUserAsync(email);
+            logger.LogInformation("User loaded/created in database. User ID: {UserId}", dbUser.Id);
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(
+            ex,
+            "Failed to get or create user in database during OAuth callback. Email: {Email}",
+            email
+        );
+    }
+    
+    // Redirect to frontend success page
+    return Results.Redirect($"{frontendUrl}/auth/callback");
+})
+.WithTags("Authentication")
+.WithSummary("OAuth callback endpoint")
+.WithDescription("Handles the redirect from Google OAuth and sets authentication cookie")
+.ExcludeFromDescription();
+
+// Success endpoint after login (deprecated - keeping for backward compatibility)
 app.MapGet("/api/auth/success", (HttpContext context, ILogger<Program> logger) =>
 {
     if (!context.User.Identity?.IsAuthenticated ?? true)
@@ -214,13 +280,26 @@ app.MapGet("/api/auth/me", async (HttpContext context, IUserService userService,
     // Log authentication status for debugging
     var isAuth = context.User.Identity?.IsAuthenticated ?? false;
     var cookieHeader = context.Request.Headers["Cookie"].ToString();
+    var cookieName = "JobHelper.Auth";
+    var hasCookie = cookieHeader.Contains(cookieName);
+    
+    logger.LogInformation(
+        "Auth check - IsAuthenticated: {IsAuth}, Cookie Present: {CookiePresent}, Has JobHelper Cookie: {HasCookie}, Claims Count: {ClaimsCount}, Origin: {Origin}, Referer: {Referer}",
+        isAuth,
+        !string.IsNullOrEmpty(cookieHeader),
+        hasCookie,
+        context.User.Claims.Count(),
+        context.Request.Headers["Origin"].ToString(),
+        context.Request.Headers["Referer"].ToString()
+    );
     
     if (!isAuth)
     {
         logger.LogWarning(
             "Authentication check failed - user not authenticated. " +
-            "Cookie Present: {CookiePresent}, Claims Count: {ClaimsCount}, Request Path: {RequestPath}, User Agent: {UserAgent}",
+            "Cookie Present: {CookiePresent}, Has JobHelper Cookie: {HasCookie}, Claims Count: {ClaimsCount}, Request Path: {RequestPath}, User Agent: {UserAgent}",
             !string.IsNullOrEmpty(cookieHeader),
+            hasCookie,
             context.User.Claims.Count(),
             context.Request.Path,
             context.Request.Headers["User-Agent"].ToString()
