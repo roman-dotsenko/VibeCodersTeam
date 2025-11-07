@@ -1,0 +1,42 @@
+from typing import Optional
+from fastapi import FastAPI
+from pydantic import BaseModel
+import uuid
+from chat import create_chat
+
+app = FastAPI()
+
+chats = {}
+
+
+class ChatRequest(BaseModel):
+    chat_id: Optional[str] = None
+    message: str
+
+
+@app.post("/chat")
+async def chat(req: ChatRequest):
+    if req.chat_id is None:
+        chat_id = str(uuid.uuid4())
+        chat = create_chat()
+        chats[chat_id] = chat
+    else:
+        chat_id = req.chat_id
+        chat = chats.get(chat_id)
+        if chat is None:
+            return {"error": "Chat not found or expired. Start a new one."}
+
+    # Send user message to model
+    response = chat.send_message(
+        req.message +
+        " Wait for the user's answer before continuing. "
+        "Do not answer questions. Only ask interview questions."
+    )
+
+    finished = "Thank you for using our mock interview program" in response.text
+
+    return {
+        "chat_id": chat_id,
+        "response": response.text,
+        "finished": finished
+    }
