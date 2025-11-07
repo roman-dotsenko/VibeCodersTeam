@@ -1,0 +1,9 @@
+{
+  "Header": {
+     "dashboard": "Панель",
+     "agent": "ШІ-Агент"
+  },
+  "HomePage": {
+    "title": "Привіт світ!"
+  }
+}
