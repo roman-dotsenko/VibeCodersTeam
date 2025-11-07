@@ -1,4 +1,6 @@
 {
   "/agent/page": "app/agent/page.js",
+  "/dashboard/create-resume/page": "app/dashboard/create-resume/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
   "/page": "app/page.js"
 }

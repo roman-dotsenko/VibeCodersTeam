@@ -1,871 +1,1817 @@
-[00:00:00.804] Server  LOG      ✓ Ready in 572ms
-[00:00:02.548] Server  ERROR    ⨯ ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
+[00:00:00.556] Server  LOG      ✓ Ready in 413ms
+[00:00:02.304] Server  ERROR   React does not recognize the `inputType` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `inputtype` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+[00:00:02.401] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:02.660] Browser ERROR   React does not recognize the `%s` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `%s` instead. If you accidentally passed it from a parent component, remove it from the DOM element. inputType inputtype
+[00:00:08.560] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:12.155] Browser ERROR   React does not recognize the `%s` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `%s` instead. If you accidentally passed it from a parent component, remove it from the DOM element. inputType inputtype
+[00:00:42.949] Server  LOG      ✓ Compiled in 13ms
+[00:00:46.708] Browser ERROR   unhandledRejection: Error: Invalid argument passed to jsPDF.scale
+[00:03:02.426] Server  LOG      ✓ Compiled in 10ms
+[00:03:06.662] Browser ERROR   Failed to generate PDF: {}
+[00:03:55.398] Server  LOG      ✓ Compiled in 11ms
+[00:04:02.112] Browser LOG     0
+[00:04:15.221] Browser LOG     1
+[00:04:31.549] Browser ERROR   Failed to generate PDF: {}
+[00:05:52.874] Server  LOG      ✓ Compiled in 12ms
+[00:05:55.467] Browser ERROR   Failed to generate PDF: {}
+[00:06:39.544] Server  LOG      ✓ Compiled in 11ms
+[00:07:24.499] Browser ERROR   Failed to generate PDF: {}
+[00:07:33.278] Browser ERROR   Failed to generate PDF: {}
+[00:09:07.998] Browser ERROR   Failed to generate PDF: {}
+[00:10:55.000] Server  LOG      ✓ Compiled in 18ms
+[00:11:08.326] Server  LOG      ✓ Compiled in 7ms
+[00:11:49.681] Server  LOG      ✓ Compiled in 12ms
+[00:12:03.615] Server  LOG      ✓ Compiled in 19ms
+[00:12:10.792] Server  LOG      ✓ Compiled in 7ms
+[00:12:17.680] Server  LOG      ✓ Compiled in 6ms
+[00:12:31.096] Server  LOG      ✓ Compiled in 12ms
+[00:12:39.054] Server  LOG      ✓ Compiled in 8ms
+[00:13:01.921] Server  LOG      ✓ Compiled in 14ms
+[00:13:08.036] Server  LOG      ✓ Compiled in 14ms
+[00:13:51.151] Server  LOG      ✓ Compiled in 41ms
+[00:17:23.815] Server  LOG      ✓ Compiled in 8ms
+[00:17:32.325] Browser ERROR   Failed to generate PDF: {}
+[00:17:34.311] Browser ERROR   Failed to generate PDF: {}
+[00:24:48.519] Server  LOG      ✓ Compiled in 10ms
+[00:24:53.440] Browser ERROR   Failed to generate PDF: {}
+[00:24:57.033] Browser ERROR   Failed to generate PDF: {}
+[00:26:09.647] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.647] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.648] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.649] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.650] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.650] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.651] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.651] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.653] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.654] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.654] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.655] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.656] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.656] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.657] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.658] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.659] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.659] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.660] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.660] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.661] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.661] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.662] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.663] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.664] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.664] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.665] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.665] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.666] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.666] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.667] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.667] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.668] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.669] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.670] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.670] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.671] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.671] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.672] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.673] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.674] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.674] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.675] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.676] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.676] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.677] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.677] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.678] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.679] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.679] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.680] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.680] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.681] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.681] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.682] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.682] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.683] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.683] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.684] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.684] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.685] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.685] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.686] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.686] Server  ERROR    ⨯ ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:26:09.687] Server  LOG      ✓ Compiled in 302ms
+[00:26:09.790] Browser ERROR   ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:26:09.790] Browser ERROR   ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:26:39.860] Browser ERROR   ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:26:39.860] Browser ERROR   ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:26:39.860] Browser ERROR   ./client/app/dashboard/create-resume/page.tsx:5:1
+Module not found: Can't resolve 'html-to-image'
+  3 | import Input, { InputType } from "@/components/ui/Input";
+  4 | import {jsPDF} from "jspdf";
+> 5 | import {toPng}  from "html-to-image";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function CreateResume() {
+  8 |   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:26:39.860] Browser ERROR   ./client/app/dashboard/create-resume/page.tsx:4:1
+Module not found: Can't resolve 'jspdf'
+  2 | import React, { useRef, useState } from "react";
+  3 | import Input, { InputType } from "@/components/ui/Input";
+> 4 | import {jsPDF} from "jspdf";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import {toPng}  from "html-to-image";
+  6 |
+  7 | export default function CreateResume() {
+
+Import traces:
+  Client Component Browser:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:26:40.400] Server  LOG      ✓ Compiled in 635ms
+[00:26:43.826] Browser ERROR   Failed to generate PDF: {}
+[00:31:13.959] Server  LOG      ✓ Compiled in 32ms
+[00:31:24.603] Server  LOG      ✓ Compiled in 56ms
+[00:31:46.618] Server  LOG      ✓ Compiled in 14ms
+[00:32:02.318] Server  LOG      ✓ Compiled in 20ms
+[00:32:05.165] Browser LOG     0
+[00:32:05.165] Browser LOG     0
+[00:32:06.012] Browser LOG     0
+[00:32:14.116] Browser ERROR   Error generating PDF: {}
+[00:32:14.116] Browser ERROR   Error saving resume: {}
+[00:32:35.813] Server  LOG      ✓ Compiled in 10ms
+[00:32:37.704] Browser ERROR   Error generating PDF: {}
+[00:32:37.704] Browser ERROR   Failed to generate PDF: {}
+[00:32:41.639] Browser ERROR   Error generating PDF: {}
+[00:32:41.639] Browser ERROR   Error saving resume: {}
+[00:32:42.273] Browser ERROR   Error generating PDF: {}
+[00:32:42.273] Browser ERROR   Error saving resume: {}
+[00:33:20.542] Server  LOG      ✓ Compiled in 21ms
+[00:33:52.492] Browser LOG     0
+[00:34:34.982] Server  LOG      ✓ Compiled in 6ms
+[00:34:40.044] Server  LOG      ✓ Compiled in 12ms
+[00:37:15.640] Browser LOG     0
+[00:37:24.648] Browser LOG     1
+[00:37:40.957] Browser ERROR   Failed to generate PDF: {}
+[00:40:22.700] Browser LOG     0
+[00:40:59.871] Browser LOG     1
+[00:41:41.656] Browser ERROR   ./client/messages/en.json
+Code generation for chunk item errored
+An error occurred while generating the chunk item [project]/client/messages/en.json (json)
+
+Caused by:
+- Unable to make a module from invalid JSON: trailing comma at line 29 column 3
+
+Debug info:
+- An error occurred while generating the chunk item [project]/client/messages/en.json (json)
+- Execution of <JsonChunkItem as EcmascriptChunkItem>::content failed
+- Unable to make a module from invalid JSON: trailing comma at line 29 column 3
+    at CreateResumePage.?
+      25 |     "degree": "Degree",
+      26 |     "startDate": "Start Date",
+      27 |     "endDate": "End Date",
+      28 |     "description": "Description",
+         |   v
+      29 +   }
+         |   ^
+      30 | }
 
 Import trace:
+  Server Component:
+    ./client/messages/en.json
+    ./client/app/i18n/request.ts
+    ./client/node_modules/next-intl/dist/esm/development/server/react-server/getConfig.js
+    ./client/node_modules/next-intl/dist/esm/development/server/react-server/getLocale.js
+    ./client/app/layout.tsx
+[00:42:24.227] Server  LOG      ✓ Compiled in 28ms
+[00:42:24.281] Browser ERROR   {"code":"MISSING_MESSAGE","originalMessage":"Could not resolve `CreateResume` in messages for locale `ua`."}
+[00:42:24.281] Browser ERROR   {"code":"MISSING_MESSAGE","originalMessage":"Could not resolve `CreateResume` in messages for locale `ua`."}
+[00:42:44.031] Server  LOG      ✓ Compiled in 10ms
+[00:42:44.093] Browser ERROR   {"code":"MISSING_MESSAGE","originalMessage":"Could not resolve `CreateResume` in messages for locale `ua`."}
+[00:42:44.093] Browser ERROR   {"code":"MISSING_MESSAGE","originalMessage":"Could not resolve `CreateResume` in messages for locale `ua`."}
+[00:42:54.905] Browser ERROR   {"code":"MISSING_MESSAGE","originalMessage":"Could not resolve `CreateResume` in messages for locale `ua`."}
+[00:42:54.905] Browser ERROR   {"code":"MISSING_MESSAGE","originalMessage":"Could not resolve `CreateResume` in messages for locale `ua`."}
+[00:43:56.528] Server  LOG      ✓ Compiled in 6ms
+[00:43:57.805] Browser LOG     0
+[00:44:34.529] Server  LOG      ✓ Compiled in 9ms
+[00:44:53.586] Server  LOG      ✓ Compiled in 8ms
+[00:45:08.169] Server  LOG      ✓ Compiled in 12ms
+[00:45:17.621] Server  LOG      ✓ Compiled in 7ms
+[00:45:24.103] Server  LOG      ✓ Compiled in 7ms
+[00:45:32.802] Server  LOG      ✓ Compiled in 9ms
+[00:45:32.861] Browser ERROR   {"code":"MISSING_MESSAGE","originalMessage":"Could not resolve `CreateResume.linkedin` in messages for locale `ua`."}
+[00:45:32.861] Browser ERROR   {"code":"MISSING_MESSAGE","originalMessage":"Could not resolve `CreateResume.linkedin` in messages for locale `ua`."}
+[00:45:38.923] Server  LOG      ✓ Compiled in 7ms
+[00:45:49.004] Server  LOG      ✓ Compiled in 7ms
+[00:45:50.736] Browser LOG     1
+[00:46:01.766] Server  LOG      ✓ Compiled in 8ms
+[00:46:01.869] Browser ERROR   ./client/app/dashboard/create-resume/page.tsx:43:17
+Parsing ecmascript source code failed
+  41 |     },
+  42 |     {
+> 43 |       title: {t('education')},
+     |                 ^^^^^^^^^^^
+  44 |       fields: [
+  45 |         { label: "Education", name: "education", type: InputType.TEXT },
+  46 |         { label: "University", name: "university", type: InputType.TEXT },
+
+Unexpected token `string literal (education, 'education')`. Expected yield, an identifier, [ or {
+
+Import traces:
   Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
 
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+[00:46:21.541] Server  LOG      ✓ Compiled in 8ms
+[00:46:21.644] Browser ERROR   ./client/app/dashboard/create-resume/page.tsx:45:21
+Parsing ecmascript source code failed
+  43 |       title: t('education'),
+  44 |       fields: [
+> 45 |         { label: {t('education')}, name: "education", type: InputType.TEXT },
+     |                     ^^^^^^^^^^^
+  46 |         { label: "University", name: "university", type: InputType.TEXT },
+  47 |         { label: "Degree", name: "degree", type: InputType.TEXT },
+  48 |         { label: "Start Date", name: "startDate", type: InputType.DATE },
 
-[00:00:04.048] Server  ERROR    ⨯ ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
+Unexpected token `string literal (education, 'education')`. Expected yield, an identifier, [ or {
 
-Import trace:
+Import traces:
   Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:00:04.135] Browser ERROR   uncaughtError: Error: ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:00:04.285] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:00:04.285] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:00:06.942] Server  ERROR    ⨯ ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:00:07.049] Browser ERROR   uncaughtError: Error: ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:00:07.188] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:00:07.188] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:00:07.188] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:00:19.301] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:00:20.465] Server  ERROR    ⨯ ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:00:20.548] Browser ERROR   uncaughtError: Error: ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:00:20.703] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:00:20.703] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:00:20.703] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
-    [at at (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/dist/lib.js:38:1629)]
-    [at <anonymous> (turbopack:///[turbopack-node]/transforms/postcss.ts:56:14)]
-    [at <anonymous>]
-    [at Module.init (turbopack:///[turbopack-node]/transforms/postcss.ts:43:33)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:77:20)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:00:26.864] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:30.154] Server  LOG      ✓ Compiled in 18ms
-[00:03:32.249] Server  LOG      ✓ Compiled in 28ms
-[00:03:33.299] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:03:39.150] Server  ERROR    ⨯ ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:03:39.252] Browser ERROR   uncaughtError: Error: ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:03:39.386] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:03:39.386] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:03:39.386] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:19.300] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:25.430] Server  ERROR    ⨯ ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:25.518] Browser ERROR   uncaughtError: Error: ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:25.654] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:25.654] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:25.654] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:25.932] Server  ERROR    ⨯ ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:26.024] Browser ERROR   uncaughtError: Error: ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:26.138] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:26.138] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:26.138] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:26.142] Server  ERROR    ⨯ ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:26.235] Browser ERROR   uncaughtError: Error: ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:26.304] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:26.304] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:26.304] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:26.308] Server  ERROR    ⨯ ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:26.388] Browser ERROR   uncaughtError: Error: ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:26.524] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:26.524] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:26.524] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:50.197] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Package path ./base is not exported from package /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss (see exports field in /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/package.json)
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:51.702] Server  ERROR    ⨯ ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Package path ./base is not exported from package /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss (see exports field in /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/package.json)
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:51.868] Browser ERROR   uncaughtError: Error: ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Package path ./base is not exported from package /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss (see exports field in /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/package.json)
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:52.039] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Package path ./base is not exported from package /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss (see exports field in /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/package.json)
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:52.039] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Package path ./base is not exported from package /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss (see exports field in /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/package.json)
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:52.039] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Package path ./base is not exported from package /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss (see exports field in /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/package.json)
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:52.581] Server  ERROR    ⨯ ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Package path ./base is not exported from package /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss (see exports field in /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/package.json)
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:52.732] Browser ERROR   uncaughtError: Error: ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Package path ./base is not exported from package /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss (see exports field in /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/package.json)
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-
-
-[00:04:52.898] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Package path ./base is not exported from package /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss (see exports field in /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/package.json)
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:52.898] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Package path ./base is not exported from package /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss (see exports field in /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/package.json)
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:52.898] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Package path ./base is not exported from package /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss (see exports field in /Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/tailwindcss/package.json)
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:57.302] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:04:58.299] Browser ERROR   ./app/globals.css
-Error evaluating Node.js code
-CssSyntaxError: tailwindcss: /Users/04.ak.12/Documents/VibeCodersTeam/client/app/globals.css:1:1: Cannot apply unknown utility class `bg-primary-light`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Root.error (turbopack:///[project]/node_modules/postcss/lib/node.js:146:32)]
-    [at Object.Once (/Users/04.ak.12/Documents/VibeCodersTeam/client/node_modules/@tailwindcss/postcss/dist/index.js:10:6912)]
-    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
-    [at async LazyResult.runAsync (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:293:11)]
-    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
-    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
-
-Import trace:
-  Client Component Browser:
-    ./app/globals.css [Client Component Browser]
-    ./app/layout.tsx [Server Component]
-[00:54:48.630] Server  LOG      ✓ Compiled in 200ms
+    ./client/app/dashboard/create-resume/page.tsx [Client Component Browser]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./client/app/dashboard/create-resume/page.tsx [Client Component SSR]
+    ./client/app/dashboard/create-resume/page.tsx [Server Component]
+[00:46:40.193] Server  LOG      ✓ Compiled in 7ms
+[00:46:54.003] Server  LOG      ✓ Compiled in 8ms
+[00:47:03.729] Server  LOG      ✓ Compiled in 6ms
+[00:47:19.068] Server  LOG      ✓ Compiled in 8ms
+[01:38:41.240] Server  LOG      ✓ Compiled in 73ms
