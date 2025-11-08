@@ -535,4 +535,32 @@ app.MapPost("/api/users/{userId:guid}/resumes", async (Guid userId, Resume resum
 .Produces(400)
 .Produces(500);
 
+
+app.MapPut("/api/resumes/{resumeId:guid}", async (Guid resumeId, Resume resume, IResumeService resumeService) =>
+{
+    try
+    {
+        var createdResume = await resumeService.UpdateResumeAsync(userId, resumeId, resume);
+        return Results.Created($"/api/resumes/{createdResume.Id}", createdResume);
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.BadRequest(new { message = ex.Message });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(
+            detail: ex.Message,
+            statusCode: 500,
+            title: "Error creating resume"
+        );
+    }
+})
+.WithName("CreateResume")
+.WithTags("Resumes")
+.WithSummary("Create a new resume")
+.WithDescription("Creates a new resume for the specified user with all personal details, education, employment, skills, languages, and hobbies")
+.Produces<Resume>(201)
+.Produces(400)
+.Produces(500);
 app.Run();
