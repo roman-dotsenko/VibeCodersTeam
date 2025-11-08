@@ -3,14 +3,20 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import uuid
 from chat import create_chat
+from quiz import get_quiz
 
 app = FastAPI()
 
 chats = {}
+quizzes = {}
 
 
 class ChatRequest(BaseModel):
     chat_id: Optional[str] = None
+    message: str
+
+class QuizRequest(BaseModel):
+    quiz_id: Optional[str] = None
     message: str
 
 
@@ -40,3 +46,19 @@ async def chat(req: ChatRequest):
         "response": response.text,
         "finished": finished
     }
+
+@app.post("/quiz")
+async def quiz(req: QuizRequest):
+    response = ""
+    if req.quiz_id is None:
+        quiz_id = str(uuid.uuid4())
+        response = get_quiz(req.message)
+        quizzes[quiz_id] = quiz_id
+    else:
+        return {"error": "Invalid quiz id"}
+
+    return{
+        "quiz_id": quiz_id,
+        "response": response.text
+    }
+
