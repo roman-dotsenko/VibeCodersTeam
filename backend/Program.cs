@@ -59,7 +59,8 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowCredentials()
+              .SetPreflightMaxAge(TimeSpan.FromMinutes(10)); // Cache preflight response
     });
 });
 
@@ -189,11 +190,23 @@ app.Use(async (context, next) =>
     {
         var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
         logger.LogInformation(
-            "CORS Request received - Origin: {Origin}, Method: {Method}, Path: {Path}",
+            "CORS Request received - Origin: {Origin}, Method: {Method}, Path: {Path}, Has Credentials: {HasCredentials}",
             context.Request.Headers["Origin"],
             context.Request.Method,
-            context.Request.Path
+            context.Request.Path,
+            context.Request.Headers.ContainsKey("Cookie")
         );
+        
+        // Special logging for OPTIONS requests (preflight)
+        if (context.Request.Method == "OPTIONS")
+        {
+            logger.LogInformation(
+                "CORS Preflight (OPTIONS) - Origin: {Origin}, Access-Control-Request-Method: {RequestMethod}, Access-Control-Request-Headers: {RequestHeaders}",
+                context.Request.Headers["Origin"],
+                context.Request.Headers["Access-Control-Request-Method"],
+                context.Request.Headers["Access-Control-Request-Headers"]
+            );
+        }
     }
     
     await next();
@@ -204,17 +217,20 @@ app.Use(async (context, next) =>
         var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
         var allowOrigin = context.Response.Headers["Access-Control-Allow-Origin"].ToString();
         var allowCredentials = context.Response.Headers["Access-Control-Allow-Credentials"].ToString();
+        var allowMethods = context.Response.Headers["Access-Control-Allow-Methods"].ToString();
         
         logger.LogInformation(
             "CORS Response - Origin: {Origin}, Method: {Method}, Path: {Path}, " +
             "Access-Control-Allow-Origin: '{AllowOrigin}', " +
             "Access-Control-Allow-Credentials: '{AllowCredentials}', " +
+            "Access-Control-Allow-Methods: '{AllowMethods}', " +
             "Status: {StatusCode}",
             context.Request.Headers["Origin"],
             context.Request.Method,
             context.Request.Path,
             string.IsNullOrEmpty(allowOrigin) ? "(not set)" : allowOrigin,
             string.IsNullOrEmpty(allowCredentials) ? "(not set)" : allowCredentials,
+            string.IsNullOrEmpty(allowMethods) ? "(not set)" : allowMethods,
             context.Response.StatusCode
         );
     }
@@ -250,6 +266,14 @@ app.MapGet("/api/auth/callback", async (HttpContext context, IUserService userSe
 {
     var config = context.RequestServices.GetRequiredService<IConfiguration>();
     var frontendUrl = config.GetSection("Cors:AllowedOrigins").Get<string[]>()?[0] ?? "http://localhost:3000";
+    
+    // Log the authentication state BEFORE processing
+    logger.LogInformation(
+        "OAuth callback received. IsAuthenticated: {IsAuth}, Request scheme: {Scheme}, Host: {Host}",
+        context.User.Identity?.IsAuthenticated ?? false,
+        context.Request.Scheme,
+        context.Request.Host
+    );
     
     if (!context.User.Identity?.IsAuthenticated ?? true)
     {
@@ -290,6 +314,14 @@ app.MapGet("/api/auth/callback", async (HttpContext context, IUserService userSe
         );
     }
     
+    // Log the cookies that will be set
+    var setCookieHeaders = context.Response.Headers["Set-Cookie"].ToArray();
+    logger.LogInformation(
+        "OAuth callback setting cookies. Set-Cookie headers count: {Count}, Values: [{Cookies}]",
+        setCookieHeaders.Length,
+        string.Join(" | ", setCookieHeaders.Select(h => h != null ? h.Substring(0, Math.Min(100, h.Length)) + "..." : "null"))
+    );
+    
     // Return an HTML page that will handle the redirect and ensure cookie is set
     var html = $@"
 <!DOCTYPE html>
@@ -297,14 +329,19 @@ app.MapGet("/api/auth/callback", async (HttpContext context, IUserService userSe
 <head>
     <title>Authentication Successful</title>
     <script>
+        console.log('OAuth callback success page loaded');
+        console.log('Cookies:', document.cookie);
+        
         // Give the browser a moment to set the cookie, then redirect
         setTimeout(function() {{
+            console.log('Redirecting to frontend...');
             window.location.href = '{frontendUrl}/auth/callback';
-        }}, 100);
+        }}, 500); // Increased to 500ms for better reliability
     </script>
 </head>
 <body>
     <p>Authentication successful! Redirecting...</p>
+    <p>If you are not redirected, <a href='{frontendUrl}/auth/callback'>click here</a>.</p>
 </body>
 </html>";
     
@@ -354,26 +391,33 @@ app.MapGet("/api/auth/me", async (HttpContext context, IUserService userService,
     var cookieName = "JobHelper.Auth";
     var hasCookie = cookieHeader.Contains(cookieName);
     
+    // Parse and log all cookies
+    var allCookies = context.Request.Cookies.Select(c => $"{c.Key}={c.Value.Substring(0, Math.Min(20, c.Value.Length))}...").ToList();
+    
     logger.LogInformation(
-        "Auth check - IsAuthenticated: {IsAuth}, Cookie Present: {CookiePresent}, Has JobHelper Cookie: {HasCookie}, Claims Count: {ClaimsCount}, Origin: {Origin}, Referer: {Referer}",
+        "Auth check - IsAuthenticated: {IsAuth}, Cookie Present: {CookiePresent}, Has JobHelper Cookie: {HasCookie}, " +
+        "Claims Count: {ClaimsCount}, Origin: {Origin}, Referer: {Referer}, All Cookies: [{Cookies}]",
         isAuth,
         !string.IsNullOrEmpty(cookieHeader),
         hasCookie,
         context.User.Claims.Count(),
         context.Request.Headers["Origin"].ToString(),
-        context.Request.Headers["Referer"].ToString()
+        context.Request.Headers["Referer"].ToString(),
+        string.Join(", ", allCookies)
     );
     
     if (!isAuth)
     {
         logger.LogWarning(
             "Authentication check failed - user not authenticated. " +
-            "Cookie Present: {CookiePresent}, Has JobHelper Cookie: {HasCookie}, Claims Count: {ClaimsCount}, Request Path: {RequestPath}, User Agent: {UserAgent}",
+            "Cookie Present: {CookiePresent}, Has JobHelper Cookie: {HasCookie}, Claims Count: {ClaimsCount}, " +
+            "Request Path: {RequestPath}, User Agent: {UserAgent}, Cookie Header Length: {CookieLength}",
             !string.IsNullOrEmpty(cookieHeader),
             hasCookie,
             context.User.Claims.Count(),
             context.Request.Path,
-            context.Request.Headers["User-Agent"].ToString()
+            context.Request.Headers["User-Agent"].ToString(),
+            cookieHeader.Length
         );
         return Results.Json(new { isAuthenticated = false }, statusCode: 401);
     }
@@ -536,7 +580,7 @@ app.MapPost("/api/users/{userId:guid}/resumes", async (Guid userId, Resume resum
 .Produces(500);
 
 
-app.MapPut("/api/resumes/{resumeId:guid}", async (Guid resumeId, Resume resume, IResumeService resumeService) =>
+app.MapPut("/api/resumes/update/{resumeId:guid}", async (Guid resumeId, Resume resume, IResumeService resumeService) =>
 {
     try
     {
