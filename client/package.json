@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "html-to-image": "^1.11.13",
     "i18next": "^25.6.1",
     "i18next-browser-languagedetector": "^8.2.0",
+    "jspdf": "^3.0.3",
     "next": "16.0.1",
     "next-i18next": "^15.4.2",
     "next-intl": "^4.4.0",

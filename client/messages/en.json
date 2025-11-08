@@ -9,5 +9,22 @@
   "DashboardPage": {
     "title": "Welcome to the Dashboard",
     "createResume": "Create new resume"
+  },
+  "CreateResume": {
+    "pageTitle": "Create Resume",
+    "downloadPDF": "Download PDF",
+    "personalInfo": "Personal details",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "address": "Address",
+    "linkedIn": "LinkedIn Profile",
+    "portfolio": "Portfolio Website",
+    "education": "Education",
+    "university": "University",
+    "degree": "Degree",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "description": "Description"
   }
 }

@@ -9,5 +9,22 @@
   "DashboardPage": {
     "title": "Ласкаво просимо до панелі",
     "createResume": "Створити нове резюме"
+  },
+  "CreateResume": {
+    "pageTitle": "Створити резюме",
+    "downloadPDF": "Завантажити PDF",
+    "personalInfo": "Особисті дані",
+    "fullName": "Повне ім'я",
+    "email": "Адреса електронної пошти",
+    "phone": "Номер телефону",
+    "address": "Адреса",
+    "linkedIn": "Профіль LinkedIn",
+    "portfolio": "Вебсайт портфоліо",
+    "education": "Освіта",
+    "university": "Університет",
+    "degree": "Ступінь",
+    "startDate": "Дата початку",
+    "endDate": "Дата закінчення",
+    "description": "Опис"
   }
 }
