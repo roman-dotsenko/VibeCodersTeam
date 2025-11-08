@@ -34,8 +34,10 @@ jobs:
         run: |
           mkdir -p deploy
           cp -r client/.next/standalone/* deploy/
-          cp -r client/.next/static deploy/.next/static
-          cp -r client/public deploy/public || true
+          mkdir -p deploy/.next/static
+          cp -r client/.next/static/* deploy/.next/static/
+          mkdir -p deploy/public
+          cp -r client/public/* deploy/public/ || true
           cp client/package*.json deploy/
           cp client/web.config deploy/ || true
       
