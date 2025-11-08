@@ -3,11 +3,22 @@ import React, { useEffect, useRef, useState } from 'react'
 import LanguageSwitcher from '../Language/LanguageSwitcher'
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import Button from '../ui/Button';
+import { authService, User } from '@/lib/auth';
 
 export default function Header() {
     const t = useTranslations('Header');
     const [open, setOpen] = useState(false)
     const menuRef = useRef<HTMLDivElement | null>(null)
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        // Check if user is authenticated
+        authService.checkAuth()
+          .then((userData) => {
+            setUser(userData);
+          })
+      }, []);
 
     // close on outside click or Escape
     useEffect(() => {
@@ -45,8 +56,24 @@ export default function Header() {
             </nav>
 
             <div className="flex items-center gap-3">
-                <div className="hidden sm:block">
+                <div className="hidden sm:flex sm:gap-2">
                     <LanguageSwitcher />
+                    {user ? (
+                        <div className="flex items-center gap-2">
+                            <img
+                                src={user.picture || '/default-avatar.png'}
+                                alt="User Avatar"
+                                className="w-8 h-8 rounded-full border border-gray-300"
+                            />
+                            <Button
+                                onClick={async () => { await authService.logout(); setUser(null); }}
+                                className="px-3 py-1 rounded-lg bg-red-500 text-white text-sm hover:bg-red-600"
+                                title='Logout'
+                            />
+                        </div>
+                    ) : (
+                        <Button title={t('register')} to='/login' className='px-3 py-1 rounded-lg bg-indigo-600 text-white'/>
+                    )}
                 </div>
 
                 <div className="sm:hidden" ref={menuRef}>
@@ -81,6 +108,22 @@ export default function Header() {
                                 <div className="pt-2 border-t border-neutral-100 dark:border-neutral-700">
                                     <LanguageSwitcher />
                                 </div>
+                                {user ? (
+                                    <div className="flex flex-col items-center justify-center py-2 gap-2">
+                                        <img
+                                            src={user.picture || '/default-avatar.png'}
+                                            alt="User Avatar"
+                                            className="w-8 h-8 rounded-full border border-gray-300"
+                                        />
+                                       <Button
+                                onClick={async () => { await authService.logout(); setUser(null); }}
+                                className="px-3 py-1 rounded-lg bg-red-500 text-white text-sm hover:bg-red-600"
+                                title='Logout'
+                            />
+                                    </div>
+                                ) : (
+                                    <Button title={t('register')} to='/login' className='px-3 py-1 rounded-lg bg-indigo-600 text-white w-full text-center'/>
+                                )}
                             </nav>
                         </div>
                     )}

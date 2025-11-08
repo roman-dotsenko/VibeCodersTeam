@@ -101,21 +101,50 @@ public class ResumeService : IResumeService
     {
         try
         {
-            var existingResume = await _context.Resumes.FindAsync(resumeId);
+            var existingResume = await _context.Resumes
+                .Include(r => r.Educations)
+                .Include(r => r.Employment)
+                .FirstOrDefaultAsync(r => r.Id == resumeId);
+                
             if (existingResume == null)
             {
                 throw new InvalidOperationException($"Resume with ID {resumeId} does not exist");
             }
 
-            _context.Entry(existingResume).CurrentValues.SetValues(resume);
+            // Direct assignment works for JSON-stored owned types
+            existingResume.PersonalDetails = resume.PersonalDetails;
+
+            // Update Skills (owned collection stored as JSON)
+            existingResume.Skills = resume.Skills;
+
+            // Update Languages (owned collection stored as JSON)
+            existingResume.Languages = resume.Languages;
+
+            // Update Hobbies (primitive collection)
+            existingResume.Hobbies = resume.Hobbies;
+
+            // Update Education collection
+            existingResume.Educations.Clear();
+            foreach (var education in resume.Educations)
+            {
+                existingResume.Educations.Add(education);
+            }
+
+            // Update Employment collection
+            existingResume.Employment.Clear();
+            foreach (var employment in resume.Employment)
+            {
+                existingResume.Employment.Add(employment);
+            }
+
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("Updated resume {ResumeId}", resume.Id);
-            return resume;
+            _logger.LogInformation("Updated resume {ResumeId}", resumeId);
+            return existingResume;
         }
         catch (DbUpdateException ex)
         {
-            _logger.LogError(ex, "Database error while updating resume {ResumeId}", resume.Id);
+            _logger.LogError(ex, "Database error while updating resume {ResumeId}", resumeId);
             throw new InvalidOperationException("Failed to update resume", ex);
         }
     }

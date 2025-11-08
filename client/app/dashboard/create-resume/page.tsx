@@ -1,10 +1,12 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useAddResume, Resume } from "@/hooks/useAddResume";
 import Input, { InputType } from "@/components/ui/Input";
 import {jsPDF} from "jspdf";
 import {toPng}  from "html-to-image";
 import { useTranslations } from "next-intl";
 import Button from "@/components/ui/Button";
+import { authService, User } from "@/lib/auth";
 
 
 export default function CreateResume() {
@@ -12,6 +14,23 @@ export default function CreateResume() {
   const [openIndexes, setOpenIndexes] = useState<number[]>([]);
   const previewRef = useRef<HTMLDivElement>(null);
   const t = useTranslations('CreateResume');
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+      const cachedUser = authService.getUser();
+      
+      if (cachedUser) {
+        setUser(cachedUser);
+      }
+  
+      // Always verify with backend
+      authService.checkAuth()
+        .then((userData) => {
+          if (userData) {
+            setUser(userData);
+          }
+        })
+    }, []);
 
   const [resume, setResume] = useState({
     fullName: "",
@@ -20,13 +39,79 @@ export default function CreateResume() {
     address: "",
     linkedin: "",
     portfolio: "",
+    school: "",
     education: "",
     university: "",
     degree: "",
     startDate: "",
     endDate: "",
     description: "",
+    desiredJobPosition: "",
+    postCode: "",
+    city: "",
+    dateOfBirth: "",
+    driverLicense: "",
+    gender: "",
+    nationality: "",
+    civilStatus: "",
+    website: "",
+    customFields: [],
+    skills: [],
+    languages: [],
+    hobbies: [],
+    employment: [],
   });
+
+  const { addResume, loading, error, data } = useAddResume();
+  // Helper to convert local resume state to API format
+  function toApiResume(local: typeof resume): Resume {
+    return {
+      id: crypto.randomUUID(),
+      personalDetails: {
+        name: local.fullName,
+        desiredJobPosition: "", // Add field if you have it
+        emailAddress: local.email,
+        phoneNumber: local.phone,
+        address: local.address,
+        school: local.school,
+        postCode: "",
+        city: "",
+        dateOfBirth: "", // Add field if you have it
+        driverLicense: "",
+        gender: "",
+        nationality: "",
+        civilStatus: "",
+        website: local.portfolio,
+        linkedIn: local.linkedin,
+        customFields: [],
+      },
+      educations: [
+        {
+          educationName: local.education,
+          university: local.university,
+          degree: local.degree,
+          school: local.school,
+          city: local.city,
+          startDate: local.startDate,
+          endDate: local.endDate,
+          description: local.description,
+        },
+      ],
+      employment: [],
+      skills: [],
+      languages: [],
+      hobbies: [],
+    };
+  }
+  const handleAddResume = async () => {
+    try {
+      const apiResume = toApiResume(resume);
+      await addResume(user?.id, apiResume);
+      alert("Resume added successfully!");
+    } catch (err) {
+      alert("Failed to add resume");
+    }
+  };
 
   const sections = [
     {
@@ -38,6 +123,15 @@ export default function CreateResume() {
         { label: t('address'), name: "address", type: InputType.TEXT },
         { label: t('linkedIn'), name: "linkedin", type: InputType.TEXT },
         { label: t('portfolio'), name: "portfolio", type: InputType.TEXT },
+        { label: "Desired Job Position", name: "desiredJobPosition", type: InputType.TEXT },
+        { label: "Post Code", name: "postCode", type: InputType.TEXT },
+        { label: "City", name: "city", type: InputType.TEXT },
+        { label: "Date of Birth", name: "dateOfBirth", type: InputType.DATE },
+        { label: "Driver License", name: "driverLicense", type: InputType.TEXT },
+        { label: "Gender", name: "gender", type: InputType.TEXT },
+        { label: "Nationality", name: "nationality", type: InputType.TEXT },
+        { label: "Civil Status", name: "civilStatus", type: InputType.TEXT },
+        { label: "Website", name: "website", type: InputType.TEXT },
       ],
     },
     {
@@ -51,11 +145,30 @@ export default function CreateResume() {
         { label: t('description'), name: "description", type: InputType.TEXTAREA },
       ],
     },
+    {
+      title: "Skills, Languages, Hobbies, Employment, Custom Fields",
+      fields: [
+        { label: "Skills (comma separated)", name: "skills", type: InputType.TEXT },
+        { label: "Languages (comma separated)", name: "languages", type: InputType.TEXT },
+        { label: "Hobbies (comma separated)", name: "hobbies", type: InputType.TEXT },
+        { label: "Employment (comma separated)", name: "employment", type: InputType.TEXT },
+      ],
+    },
   ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setResume((prev) => ({ ...prev, [name]: value }));
+    
+    // Handle array fields (skills, languages, hobbies, employment, customFields)
+    const arrayFields = ['skills', 'languages', 'hobbies', 'employment', 'customFields'];
+    
+    if (arrayFields.includes(name)) {
+      // Split comma-separated values into array
+      const arrayValue = value ? value.split(',').map(item => item.trim()) : [];
+      setResume((prev) => ({ ...prev, [name]: arrayValue }));
+    } else {
+      setResume((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleDownloadPDF = async () => {
@@ -126,63 +239,137 @@ export default function CreateResume() {
               } overflow-hidden`}
             >
               <div className="px-5 pb-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-                {section.fields.map((field, i) => (
-                  <div key={i} className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      {field.label}
-                    </label>
-                    <Input
-                      inputType={field.type}
-                      placeholder={`${field.label}`}
-                      value={resume[field.name as keyof typeof resume]}
-                      onChange={handleChange}
-                      className="dark:bg-zinc-800 dark:border-gray-700"
-                      {...(field.type !== InputType.TEXTAREA
-                        ? { name: field.name }
-                        : { name: field.name })}
-                    />
-                  </div>
-                ))}
+                {section.fields.map((field, i) => {
+                  const fieldValue = resume[field.name as keyof typeof resume];
+                  const stringValue = Array.isArray(fieldValue) 
+                    ? fieldValue.join(', ') 
+                    : (fieldValue as string);
+                  
+                  return (
+                    <div key={i} className="flex flex-col">
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        {field.label}
+                      </label>
+                      <Input
+                        inputType={field.type}
+                        placeholder={`${field.label}`}
+                        value={stringValue}
+                        onChange={handleChange}
+                        className="dark:bg-zinc-800 dark:border-gray-700"
+                        {...(field.type !== InputType.TEXTAREA
+                          ? { name: field.name }
+                          : { name: field.name })}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      <div ref={previewRef} className="w-full h-[700px] md:w-1/2 bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6">
-        <div>
-          <h3 className="text-xl font-bold">{resume.fullName || "Your Name"}</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            {resume.email && `${resume.email} | `}
-            {resume.phone && `${resume.phone} | `}
-            {resume.address}
-          </p>
-          <p className="text-sm text-indigo-600 mt-1">
-            {resume.linkedin && `LinkedIn: ${resume.linkedin}`}
-            {resume.portfolio && ` | Portfolio: ${resume.portfolio}`}
-          </p>
+      <div
+  ref={previewRef}
+  className="w-full md:w-1/2 bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6 overflow-auto max-h-[700px]"
+>
+  <div>
+    {/* Header */}
+    <h3 className="text-2xl font-bold">{resume.fullName || "Your Name"}</h3>
+    <p className="text-sm text-gray-600 dark:text-gray-400">
+      {resume.email && `${resume.email} | `}
+      {resume.phone && `${resume.phone} | `}
+      {resume.address}
+    </p>
+    <p className="text-sm text-indigo-600 mt-1">
+      {resume.linkedin && `LinkedIn: ${resume.linkedin}`}
+      {resume.portfolio && ` | Portfolio: ${resume.portfolio}`}
+    </p>
 
-          <div className="mt-6">
-            <h4 className="text-lg font-semibold">Education</h4>
-            <p className="text-gray-700 dark:text-gray-300">
-              {resume.degree && `${resume.degree}, `}
-              {resume.university}
-            </p>
-            <p className="text-sm text-gray-500">
-              {resume.startDate} - {resume.endDate}
-            </p>
-            <p className="mt-2 text-gray-700 dark:text-gray-300 whitespace-pre-line">
-              {resume.description}
-            </p>
-          </div>
-        </div>
+    {/* Education */}
+    <div className="mt-6">
+      <h4 className="text-lg font-semibold">Education</h4>
+      <p className="text-gray-700 dark:text-gray-300">
+        {resume.degree && `${resume.degree}, `}
+        {resume.university}
+      </p>
+      <p className="text-sm text-gray-500">
+        {resume.startDate} - {resume.endDate}
+      </p>
+      <p className="mt-2 text-gray-700 dark:text-gray-300 whitespace-pre-line">
+        {resume.description}
+      </p>
+    </div>
+
+    {/* Skills */}
+    {resume.skills && resume.skills.length > 0 && (
+      <div className="mt-6">
+        <h4 className="text-lg font-semibold">Skills</h4>
+        <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+          {resume.skills
+            .toString()
+            .split(",")
+            .map((skill, i) => (
+              <li key={i}>{skill.trim()}</li>
+            ))}
+        </ul>
       </div>
+    )}
+
+    {/* Languages */}
+    {resume.languages && resume.languages.length > 0 && (
+      <div className="mt-6">
+        <h4 className="text-lg font-semibold">Languages</h4>
+        <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+          {resume.languages
+            .toString()
+            .split(",")
+            .map((lang, i) => (
+              <li key={i}>{lang.trim()}</li>
+            ))}
+        </ul>
+      </div>
+    )}
+
+    {/* Hobbies */}
+    {resume.hobbies && resume.hobbies.length > 0 && (
+      <div className="mt-6">
+        <h4 className="text-lg font-semibold">Hobbies</h4>
+        <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+          {resume.hobbies
+            .toString()
+            .split(",")
+            .map((hob, i) => (
+              <li key={i}>{hob.trim()}</li>
+            ))}
+        </ul>
+      </div>
+    )}
+
+    {/* Employment */}
+    {resume.employment && resume.employment.length > 0 && (
+      <div className="mt-6">
+        <h4 className="text-lg font-semibold">Employment</h4>
+        <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+          {resume.employment
+            .toString()
+            .split(",")
+            .map((emp, i) => (
+              <li key={i}>{emp.trim()}</li>
+            ))}
+        </ul>
+      </div>
+    )}
+  </div>
+</div>
 
       
       </div>
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end mb-4 gap-2">
         <Button title="Download PDF" onClick={handleDownloadPDF} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"/>
+        <Button title={loading ? "Adding..." : "Add Resume"} onClick={handleAddResume} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition" disabled={loading}/>
       </div>
+      {error && <div className="text-red-500 mt-2">{error}</div>}
     </div>
   );
 }
