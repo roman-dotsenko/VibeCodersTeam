@@ -1,7 +1,8 @@
 {
   "Header": {
      "dashboard": "Панель",
-     "agent": "ШІ-Агент"
+     "agent": "ШІ-Агент",
+      "register": "Реєстрація"
   },
   "HomePage": {
     "title": "Привіт світ!"

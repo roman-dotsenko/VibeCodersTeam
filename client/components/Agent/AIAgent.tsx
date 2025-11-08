@@ -28,12 +28,11 @@ export default function AIAgent() {
         const userMessage = inputValue.trim()
         setInputValue('')
         
-        // Add user message to chat
         setMessages(prev => [...prev, { role: 'user', content: userMessage }])
         setIsLoading(true)
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/chat', {
+            const response = await fetch(process.env.NEXT_PUBLIC_CHAT_URI + '/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,15 +49,12 @@ export default function AIAgent() {
 
             const data = await response.json()
             
-            // Save chat_id for subsequent messages
             if (data.chat_id && !chatId) {
                 setChatId(data.chat_id)
             }
 
-            // Add assistant response to chat
             setMessages(prev => [...prev, { role: 'assistant', content: data.response }])
             
-            // Check if interview is finished
             if (data.finished) {
                 setIsFinished(true)
             }

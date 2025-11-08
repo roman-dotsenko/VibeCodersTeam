@@ -9,7 +9,7 @@ function CallbackContent() {
   useEffect(() => {
     // After OAuth, the backend has set a cookie
     // Verify authentication and fetch user data
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://localhost:7018';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:7018';
     
     fetch(`${backendUrl}/api/auth/me`, {
       credentials: 'include', // Important: include cookies
