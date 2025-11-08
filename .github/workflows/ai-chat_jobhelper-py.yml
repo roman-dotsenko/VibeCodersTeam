@@ -74,5 +74,7 @@ jobs:
           app-name: 'jobhelper-py'
           slot-name: 'Production'
           package: ./AI2 
+          startup-command: 'uvicorn main:app'
 
           
+
