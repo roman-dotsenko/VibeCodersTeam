@@ -1,11 +1,12 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAddResume, Resume } from "@/hooks/useAddResume";
 import Input, { InputType } from "@/components/ui/Input";
 import {jsPDF} from "jspdf";
 import {toPng}  from "html-to-image";
 import { useTranslations } from "next-intl";
 import Button from "@/components/ui/Button";
+import { authService, User } from "@/lib/auth";
 
 
 export default function CreateResume() {
@@ -16,6 +17,23 @@ export default function CreateResume() {
   );
   const previewRef = useRef<HTMLDivElement>(null);
   const t = useTranslations('CreateResume');
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+      const cachedUser = authService.getUser();
+      
+      if (cachedUser) {
+        setUser(cachedUser);
+      }
+  
+      // Always verify with backend
+      authService.checkAuth()
+        .then((userData) => {
+          if (userData) {
+            setUser(userData);
+          }
+        })
+    }, []);
 
   const [resume, setResume] = useState({
     fullName: "",
@@ -24,6 +42,7 @@ export default function CreateResume() {
     address: "",
     linkedin: "",
     portfolio: "",
+    school: "",
     education: "",
     university: "",
     degree: "",
@@ -58,6 +77,7 @@ export default function CreateResume() {
         emailAddress: local.email,
         phoneNumber: local.phone,
         address: local.address,
+        school: local.school,
         postCode: "",
         city: "",
         dateOfBirth: "", // Add field if you have it
@@ -71,9 +91,11 @@ export default function CreateResume() {
       },
       educations: [
         {
-          education: local.education,
+          educationName: local.education,
           university: local.university,
           degree: local.degree,
+          school: local.school,
+          city: local.city,
           startDate: local.startDate,
           endDate: local.endDate,
           description: local.description,
@@ -88,7 +110,7 @@ export default function CreateResume() {
   const handleAddResume = async () => {
     try {
       const apiResume = toApiResume(resume);
-      await addResume([apiResume]);
+      await addResume(user?.id, apiResume);
       alert("Resume added successfully!");
     } catch (err) {
       alert("Failed to add resume");

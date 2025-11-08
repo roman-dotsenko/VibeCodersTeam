@@ -6,11 +6,12 @@ export async function addResume(userId: string, resume: any) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify([resume]), // API expects an array
+      body: JSON.stringify(resume), // API expects an array
     }
   );
   if (!response.ok) {
     throw new Error('Failed to add resume');
   }
-  return await response.json();
+  const data = await response.json();
+  return Array.isArray(data) ? data[0] : data;
 }
