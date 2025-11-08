@@ -97,14 +97,14 @@ public class ResumeService : IResumeService
     }
 
     /// <inheritdoc/>
-    public async Task<Resume> UpdateResumeAsync(Resume resume)
+    public async Task<Resume> UpdateResumeAsync(Guid resumeId, Resume resume)
     {
         try
         {
-            var existingResume = await _context.Resumes.FindAsync(resume.Id);
+            var existingResume = await _context.Resumes.FindAsync(resumeId);
             if (existingResume == null)
             {
-                throw new InvalidOperationException($"Resume with ID {resume.Id} does not exist");
+                throw new InvalidOperationException($"Resume with ID {resumeId} does not exist");
             }
 
             _context.Entry(existingResume).CurrentValues.SetValues(resume);
