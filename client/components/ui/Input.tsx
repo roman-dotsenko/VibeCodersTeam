@@ -15,16 +15,17 @@ type InputProps = {
     value?: string
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
     inputType: InputType
+    name?: string
 }
 
 export const inputStyles =
   'w-full px-3 py-2 rounded-md border border-neutral-200 bg-white text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-transparent dark:border-neutral-700 dark:text-neutral-200 dark:placeholder:text-neutral-500'
 
 export default function Input({...props}: InputProps) {
-  const { className, placeholder = 'Input', ...rest } = props
+  const { className, placeholder = 'Input', inputType, ...rest } = props
 
   return (
-    props.inputType === InputType.TEXTAREA ? (
+    inputType === InputType.TEXTAREA ? (
       <textarea
         className={`${inputStyles} ${className ?? ''}`.trim()}
         placeholder={placeholder}
@@ -34,7 +35,7 @@ export default function Input({...props}: InputProps) {
       <input
         className={`${inputStyles} ${className ?? ''}`.trim()}
         placeholder={placeholder}
-        type={props.inputType}
+        type={inputType}
         {...rest}
       />
     )

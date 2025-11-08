@@ -2,7 +2,12 @@
   "Header": {
      "dashboard": "Dashboard",
      "agent": "AI-Agent",
+     "quiz": "Quiz",
      "register": "Register"
+  },
+  "QuizPage": {
+    "title": "AI Quiz Generator",
+    "subtitle": "Generate a custom quiz on any topic using AI"
   },
   "HomePage": {
     "title": "Hello world!"
