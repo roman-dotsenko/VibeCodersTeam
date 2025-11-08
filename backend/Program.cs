@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using JobHelper.Data;
 using JobHelper.Services;
-using JobHelper.Models;
 using Microsoft.EntityFrameworkCore;
 using JobHelper.ApiModels;
 using Scalar.AspNetCore;
+using JobHelper.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +44,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Register services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IResumeService, ResumeService>();
+builder.Services.AddScoped<IQuizService, QuizService>();
 
 // Add OpenAPI services
 builder.Services.AddOpenApi();
@@ -71,11 +72,11 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 })
 .AddCookie(options =>
-{
+{   
     options.LoginPath = "/api/auth/login";
     options.LogoutPath = "/api/auth/logout";
     options.Cookie.Name = "JobHelper.Auth";
-    options.Cookie.HttpOnly = false;
+    options.Cookie.HttpOnly = true;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // HTTPS only (required for SameSite=None)
     options.Cookie.SameSite = SameSiteMode.None; // Required for cross-origin requests
     options.Cookie.IsEssential = true; // Mark as essential for GDPR compliance
@@ -92,28 +93,6 @@ builder.Services.AddAuthentication(options =>
         );
         context.Response.StatusCode = 401;
         return Task.CompletedTask;
-    };
-    options.Events.OnValidatePrincipal = async context =>
-    {
-        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-        
-        if (context.Principal?.Identity?.IsAuthenticated != true)
-        {
-            logger.LogWarning(
-                "Cookie validation failed - user not authenticated. Request Path: {RequestPath}",
-                context.Request.Path
-            );
-            context.RejectPrincipal();
-            await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        }
-        else
-        {
-            logger.LogInformation(
-                "Cookie validation successful. User: {Email}, Claims: {ClaimsCount}",
-                context.Principal.FindFirst(ClaimTypes.Email)?.Value ?? "Unknown",
-                context.Principal.Claims.Count()
-            );
-        }
     };
 })
 .AddGoogle(googleOptions =>
@@ -136,6 +115,37 @@ builder.Services.AddAuthentication(options =>
     googleOptions.ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
     googleOptions.ClaimActions.MapJsonKey("picture", "picture");
     
+    // Handle successful authentication - create user in database
+    googleOptions.Events.OnTicketReceived = async context =>
+    {
+        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+        var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+        
+        var email = context.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+        var name = context.Principal?.FindFirst(ClaimTypes.Name)?.Value;
+        
+        logger.LogInformation(
+            "Google OAuth ticket received. Email: {Email}, Name: {Name}, RedirectUri: {RedirectUri}",
+            email ?? "Unknown",
+            name ?? "Unknown",
+            context.ReturnUri
+        );
+        
+        // Get or create user in database
+        if (!string.IsNullOrEmpty(email))
+        {
+            try
+            {
+                var dbUser = await userService.GetOrCreateUserAsync(email);
+                logger.LogInformation("User loaded/created in database. User ID: {UserId}", dbUser.Id);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to get or create user in database. Email: {Email}", email);
+            }
+        }
+    };
+    
     // Add event handlers for authentication failures
     googleOptions.Events.OnRemoteFailure = context =>
     {
@@ -154,87 +164,15 @@ builder.Services.AddAuthentication(options =>
         context.HandleResponse();
         return Task.CompletedTask;
     };
-    
-    googleOptions.Events.OnAccessDenied = context =>
-    {
-        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-        logger.LogWarning(
-            "User denied access during Google OAuth authentication. Request Path: {RequestPath}",
-            context.Request.Path
-        );
-        
-        context.Response.Redirect("/api/auth/login?error=access_denied");
-        context.HandleResponse();
-        return Task.CompletedTask;
-    };
 });
 
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Map OpenAPI endpoint
-app.MapOpenApi();
-
-// Add Scalar API documentation UI (modern alternative to Swagger UI)
-app.MapScalarApiReference();
-
 // IMPORTANT: CORS must be called before Authentication and Authorization
 app.UseCors();
 
-// Add response headers for debugging CORS
-app.Use(async (context, next) =>
-{
-    // Log the incoming request
-    if (context.Request.Headers.ContainsKey("Origin"))
-    {
-        var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
-        logger.LogInformation(
-            "CORS Request received - Origin: {Origin}, Method: {Method}, Path: {Path}, Has Credentials: {HasCredentials}",
-            context.Request.Headers["Origin"],
-            context.Request.Method,
-            context.Request.Path,
-            context.Request.Headers.ContainsKey("Cookie")
-        );
-        
-        // Special logging for OPTIONS requests (preflight)
-        if (context.Request.Method == "OPTIONS")
-        {
-            logger.LogInformation(
-                "CORS Preflight (OPTIONS) - Origin: {Origin}, Access-Control-Request-Method: {RequestMethod}, Access-Control-Request-Headers: {RequestHeaders}",
-                context.Request.Headers["Origin"],
-                context.Request.Headers["Access-Control-Request-Method"],
-                context.Request.Headers["Access-Control-Request-Headers"]
-            );
-        }
-    }
-    
-    await next();
-    
-    // Log the response headers after CORS middleware has processed them
-    if (context.Request.Headers.ContainsKey("Origin"))
-    {
-        var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
-        var allowOrigin = context.Response.Headers["Access-Control-Allow-Origin"].ToString();
-        var allowCredentials = context.Response.Headers["Access-Control-Allow-Credentials"].ToString();
-        var allowMethods = context.Response.Headers["Access-Control-Allow-Methods"].ToString();
-        
-        logger.LogInformation(
-            "CORS Response - Origin: {Origin}, Method: {Method}, Path: {Path}, " +
-            "Access-Control-Allow-Origin: '{AllowOrigin}', " +
-            "Access-Control-Allow-Credentials: '{AllowCredentials}', " +
-            "Access-Control-Allow-Methods: '{AllowMethods}', " +
-            "Status: {StatusCode}",
-            context.Request.Headers["Origin"],
-            context.Request.Method,
-            context.Request.Path,
-            string.IsNullOrEmpty(allowOrigin) ? "(not set)" : allowOrigin,
-            string.IsNullOrEmpty(allowCredentials) ? "(not set)" : allowCredentials,
-            string.IsNullOrEmpty(allowMethods) ? "(not set)" : allowMethods,
-            context.Response.StatusCode
-        );
-    }
-});
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -249,9 +187,13 @@ app.MapGet("/api/auth/login", async (HttpContext context, ILogger<Program> logge
         context.Request.Headers["User-Agent"].ToString()
     );
     
+    var config = context.RequestServices.GetRequiredService<IConfiguration>();
+    var frontendUrl = context.RequestServices.GetRequiredService<IConfiguration>()
+        .GetSection("FrontendUrl").Get<string>() ?? "https://localhost:3000";
+
     var properties = new AuthenticationProperties
     {
-        RedirectUri = "/api/auth/callback",
+        RedirectUri = $"{frontendUrl}/auth/callback", // Redirect directly to frontend after OAuth completes
         IsPersistent = true,
         AllowRefresh = true
     };
@@ -260,97 +202,6 @@ app.MapGet("/api/auth/login", async (HttpContext context, ILogger<Program> logge
 })
 .WithTags("Authentication");
 
-
-// OAuth callback endpoint - handles the redirect from Google
-app.MapGet("/api/auth/callback", async (HttpContext context, IUserService userService, ILogger<Program> logger) =>
-{
-    var config = context.RequestServices.GetRequiredService<IConfiguration>();
-    var frontendUrl = config.GetSection("Cors:AllowedOrigins").Get<string[]>()?[0] ?? "http://localhost:3000";
-    
-    // Log the authentication state BEFORE processing
-    logger.LogInformation(
-        "OAuth callback received. IsAuthenticated: {IsAuth}, Request scheme: {Scheme}, Host: {Host}",
-        context.User.Identity?.IsAuthenticated ?? false,
-        context.Request.Scheme,
-        context.Request.Host
-    );
-    
-    if (!context.User.Identity?.IsAuthenticated ?? true)
-    {
-        logger.LogWarning(
-            "OAuth callback failed - user not authenticated after OAuth callback. Request Path: {RequestPath}",
-            context.Request.Path
-        );
-        
-        // Redirect to frontend with error.
-        return Results.Redirect($"{frontendUrl}/login?error=auth_failed");
-    }
-    
-    var email = context.User.FindFirst(ClaimTypes.Email)?.Value;
-    var name = context.User.FindFirst(ClaimTypes.Name)?.Value;
-    
-    logger.LogInformation(
-        "User successfully authenticated via OAuth. Email: {Email}, Name: {Name}, Claims: {Claims}",
-        email ?? "Unknown",
-        name ?? "Unknown",
-        string.Join(", ", context.User.Claims.Select(c => $"{c.Type}={c.Value}"))
-    );
-    
-    // Get or create user in database
-    try
-    {
-        if (!string.IsNullOrEmpty(email))
-        {
-            var dbUser = await userService.GetOrCreateUserAsync(email);
-            logger.LogInformation("User loaded/created in database. User ID: {UserId}", dbUser.Id);
-        }
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(
-            ex,
-            "Failed to get or create user in database during OAuth callback. Email: {Email}",
-            email
-        );
-    }
-    
-    // Log the cookies that will be set
-    var setCookieHeaders = context.Response.Headers["Set-Cookie"].ToArray();
-    logger.LogInformation(
-        "OAuth callback setting cookies. Set-Cookie headers count: {Count}, Values: [{Cookies}]",
-        setCookieHeaders.Length,
-        string.Join(" | ", setCookieHeaders.Select(h => h != null ? h.Substring(0, Math.Min(100, h.Length)) + "..." : "null"))
-    );
-    
-    // Return an HTML page that will handle the redirect and ensure cookie is set
-    var html = $@"
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Authentication Successful</title>
-    <script>
-        console.log('OAuth callback success page loaded');
-        console.log('Cookies:', document.cookie);
-        
-        // Give the browser a moment to set the cookie, then redirect
-        setTimeout(function() {{
-            console.log('Redirecting to frontend...');
-            window.location.href = '{frontendUrl}/auth/callback';
-        }}, 500); // Increased to 500ms for better reliability
-    </script>
-</head>
-<body>
-    <p>Authentication successful! Redirecting...</p>
-    <p>If you are not redirected, <a href='{frontendUrl}/auth/callback'>click here</a>.</p>
-</body>
-</html>";
-    
-    return Results.Content(html, "text/html");
-})
-.WithTags("Authentication")
-.WithSummary("OAuth callback endpoint")
-.WithDescription("Handles the redirect from Google OAuth and sets authentication cookie")
-.ExcludeFromDescription();
 
 // Success endpoint after login (deprecated - keeping for backward compatibility)
 app.MapGet("/api/auth/success", (HttpContext context, ILogger<Program> logger) =>
@@ -375,7 +226,7 @@ app.MapGet("/api/auth/success", (HttpContext context, ILogger<Program> logger) =
     
     // Redirect to frontend home page after successful login
     var frontendUrl = context.RequestServices.GetRequiredService<IConfiguration>()
-        .GetSection("Cors:AllowedOrigins").Get<string[]>()?[0] ?? "http://localhost:3000";
+        .GetSection("FrontendUrl").Get<string>() ?? "https://localhost:3000";
     
     return Results.Redirect(frontendUrl);
 })
@@ -451,7 +302,8 @@ app.MapGet("/api/auth/me", async (HttpContext context, IUserService userService,
     User? dbUser = null;
     try
     {
-        dbUser = await userService.GetOrCreateUserAsync(email);
+        var domainUser = await userService.GetOrCreateUserAsync(email);
+        dbUser = domainUser.ToApiModel();
         logger.LogInformation("User loaded from database. User ID: {UserId}", dbUser.Id);
     }
     catch (Exception ex)
@@ -500,12 +352,7 @@ app.MapGet("/api/users/{userId:guid}/resumes", async (Guid userId, IResumeServic
     try
     {
         var resumes = await resumeService.GetResumesByUserIdAsync(userId);
-
-        return Results.Ok(resumes.Select(r => new LightResumeApiModel
-        {
-            Id = r.Id,
-            Name = r.PersonalDetails.Name,
-        }));
+        return Results.Ok(resumes.Select(r => r.ToApiModel()).ToList());
     }
     catch (Exception ex)
     {
@@ -520,34 +367,7 @@ app.MapGet("/api/users/{userId:guid}/resumes", async (Guid userId, IResumeServic
 .WithTags("Resumes")
 .WithSummary("Get all resumes for a user")
 .WithDescription("Retrieves all resumes associated with a specific user ID")
-.Produces<List<LightResumeApiModel>>(200)
-.Produces(500);
-
-// Get a specific resume by ID
-app.MapGet("/api/resumes/{resumeId:guid}", async (Guid resumeId, IResumeService resumeService) =>
-{
-    try
-    {
-        var resume = await resumeService.GetResumeByIdAsync(resumeId);
-        return resume is not null 
-            ? Results.Ok(resume) 
-            : Results.NotFound(new { message = $"Resume with ID {resumeId} not found" });
-    }
-    catch (Exception ex)
-    {
-        return Results.Problem(
-            detail: ex.Message,
-            statusCode: 500,
-            title: "Error retrieving resume"
-        );
-    }
-})
-.WithName("GetResume")
-.WithTags("Resumes")
-.WithSummary("Get a specific resume by ID")
-.WithDescription("Retrieves detailed information about a specific resume including all sections (personal details, education, employment, skills, languages, hobbies)")
-.Produces<Resume>(200)
-.Produces(404)
+.Produces<List<Resume>>(200)
 .Produces(500);
 
 // Create a new resume for a user
@@ -555,8 +375,10 @@ app.MapPost("/api/users/{userId:guid}/resumes", async (Guid userId, Resume resum
 {
     try
     {
-        var createdResume = await resumeService.CreateResumeAsync(userId, resume);
-        return Results.Created($"/api/resumes/{createdResume.Id}", createdResume);
+        var domainResume = resume.ToDomainModel();
+        var createdResume = await resumeService.CreateResumeAsync(userId, domainResume);
+        var apiResume = createdResume.ToApiModel();
+        return Results.Created($"/api/resumes/{apiResume.Id}", apiResume);
     }
     catch (InvalidOperationException ex)
     {
@@ -584,8 +406,10 @@ app.MapPut("/api/resumes/update/{resumeId:guid}", async (Guid resumeId, Resume r
 {
     try
     {
-        var createdResume = await resumeService.UpdateResumeAsync(resumeId, resume);
-        return Results.Created($"/api/resumes/{createdResume.Id}", createdResume);
+        var domainResume = resume.ToDomainModel();
+        var updatedResume = await resumeService.UpdateResumeAsync(resumeId, domainResume);
+        var apiResume = updatedResume.ToApiModel();
+        return Results.Created($"/api/resumes/{apiResume.Id}", apiResume);
     }
     catch (InvalidOperationException ex)
     {
@@ -602,9 +426,105 @@ app.MapPut("/api/resumes/update/{resumeId:guid}", async (Guid resumeId, Resume r
 })
 .WithName("UpdateResume")
 .WithTags("Resumes")
-.WithSummary("Create a new resume")
-.WithDescription("Creates a new resume for the specified user with all personal details, education, employment, skills, languages, and hobbies")
 .Produces<Resume>(201)
 .Produces(400)
 .Produces(500);
+
+// Get all quizzes for a user
+app.MapGet("/api/users/{userId:guid}/quizzes", async (Guid userId, IQuizService quizService) =>
+{
+    try
+    {
+        var quizzes = await quizService.GetQuizzesByUserIdAsync(userId);
+        return Results.Ok(quizzes.Select(q => q.ToApiModel()).ToList());
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(
+            detail: ex.Message,
+            statusCode: 500,
+            title: "Error retrieving quizzes"
+        );
+    }
+})
+.WithName("GetUserQuizzes")
+.WithTags("Quizzes")
+.WithSummary("Get all quizzes for a user")
+.WithDescription("Retrieves all quizzes taken by a specific user")
+.Produces<List<Quiz>>(200)
+.Produces(500);
+
+// Add a new quiz for a user
+app.MapPost("/api/users/{userId:guid}/quizzes", async (Guid userId, Quiz quiz, IQuizService quizService) =>
+{
+    try
+    {
+        var domainQuiz = quiz.ToDomainModel();
+        var createdQuiz = await quizService.CreateQuizAsync(userId, domainQuiz);
+        var apiQuiz = createdQuiz.ToApiModel();
+        return Results.Created($"/api/users/{userId}/quizzes/{apiQuiz.QuizId}", apiQuiz);
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.BadRequest(new { message = ex.Message });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(
+            detail: ex.Message,
+            statusCode: 500,
+            title: "Error creating quiz"
+        );
+    }
+})
+.WithName("CreateQuiz")
+.WithTags("Quizzes")
+.WithSummary("Add a new quiz for a user")
+.WithDescription("Creates a new quiz entry with a score for the specified user")
+.Produces<Quiz>(201)
+.Produces(400)
+.Produces(500);
+
+// Delete a user and all associated data
+app.MapDelete("/api/users/{userId:guid}", async (Guid userId, IUserService userService) =>
+{
+    try
+    {
+        var deleted = await userService.DeleteUserAsync(userId);
+        
+        if (!deleted)
+        {
+            return Results.NotFound(new { message = $"User with ID {userId} not found" });
+        }
+
+        return Results.Ok(new { 
+            success = true, 
+            message = "User and all associated data deleted successfully" 
+        });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.Problem(
+            detail: ex.Message,
+            statusCode: 500,
+            title: "Error deleting user"
+        );
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(
+            detail: ex.Message,
+            statusCode: 500,
+            title: "Error deleting user"
+        );
+    }
+})
+.WithName("DeleteUser")
+.WithTags("Users")
+.WithSummary("Delete a user and all associated data")
+.WithDescription("Permanently deletes a user and all their associated data including resumes and quizzes. This action cannot be undone.")
+.Produces(200)
+.Produces(404)
+.Produces(500);
+
 app.Run();

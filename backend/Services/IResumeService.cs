@@ -32,6 +32,7 @@ public interface IResumeService
     /// <summary>
     /// Updates an existing resume
     /// </summary>
+    /// <param name="resumeId">The resume's unique identifier</param>
     /// <param name="resume">The resume to update</param>
     /// <returns>The updated resume</returns>
     Task<Resume> UpdateResumeAsync(Guid resumeId, Resume resume);
