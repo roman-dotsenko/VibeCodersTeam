@@ -249,7 +249,7 @@ app.MapGet("/api/auth/callback", async (HttpContext context, IUserService userSe
             context.Request.Path
         );
         
-        // Redirect to frontend with error
+        // Redirect to frontend with error.
         return Results.Redirect($"{frontendUrl}/login?error=auth_failed");
     }
     
