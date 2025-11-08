@@ -158,7 +158,17 @@ export default function CreateResume() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setResume((prev) => ({ ...prev, [name]: value }));
+    
+    // Handle array fields (skills, languages, hobbies, employment, customFields)
+    const arrayFields = ['skills', 'languages', 'hobbies', 'employment', 'customFields'];
+    
+    if (arrayFields.includes(name)) {
+      // Split comma-separated values into array
+      const arrayValue = value ? value.split(',').map(item => item.trim()) : [];
+      setResume((prev) => ({ ...prev, [name]: arrayValue }));
+    } else {
+      setResume((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleDownloadPDF = async () => {
@@ -229,23 +239,30 @@ export default function CreateResume() {
               } overflow-hidden`}
             >
               <div className="px-5 pb-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-                {section.fields.map((field, i) => (
-                  <div key={i} className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      {field.label}
-                    </label>
-                    <Input
-                      inputType={field.type}
-                      placeholder={`${field.label}`}
-                      value={resume[field.name as keyof typeof resume]}
-                      onChange={handleChange}
-                      className="dark:bg-zinc-800 dark:border-gray-700"
-                      {...(field.type !== InputType.TEXTAREA
-                        ? { name: field.name }
-                        : { name: field.name })}
-                    />
-                  </div>
-                ))}
+                {section.fields.map((field, i) => {
+                  const fieldValue = resume[field.name as keyof typeof resume];
+                  const stringValue = Array.isArray(fieldValue) 
+                    ? fieldValue.join(', ') 
+                    : (fieldValue as string);
+                  
+                  return (
+                    <div key={i} className="flex flex-col">
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        {field.label}
+                      </label>
+                      <Input
+                        inputType={field.type}
+                        placeholder={`${field.label}`}
+                        value={stringValue}
+                        onChange={handleChange}
+                        className="dark:bg-zinc-800 dark:border-gray-700"
+                        {...(field.type !== InputType.TEXTAREA
+                          ? { name: field.name }
+                          : { name: field.name })}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
