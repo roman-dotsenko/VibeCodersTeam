@@ -71,7 +71,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 })
 .AddCookie(options =>
-{
+{   
     options.LoginPath = "/api/auth/login";
     options.LogoutPath = "/api/auth/logout";
     options.Cookie.Name = "JobHelper.Auth";
@@ -92,28 +92,6 @@ builder.Services.AddAuthentication(options =>
         );
         context.Response.StatusCode = 401;
         return Task.CompletedTask;
-    };
-    options.Events.OnValidatePrincipal = async context =>
-    {
-        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-        
-        if (context.Principal?.Identity?.IsAuthenticated != true)
-        {
-            logger.LogWarning(
-                "Cookie validation failed - user not authenticated. Request Path: {RequestPath}",
-                context.Request.Path
-            );
-            context.RejectPrincipal();
-            await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        }
-        else
-        {
-            logger.LogInformation(
-                "Cookie validation successful. User: {Email}, Claims: {ClaimsCount}",
-                context.Principal.FindFirst(ClaimTypes.Email)?.Value ?? "Unknown",
-                context.Principal.Claims.Count()
-            );
-        }
     };
 })
 .AddGoogle(googleOptions =>
@@ -185,19 +163,6 @@ builder.Services.AddAuthentication(options =>
         context.HandleResponse();
         return Task.CompletedTask;
     };
-    
-    googleOptions.Events.OnAccessDenied = context =>
-    {
-        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-        logger.LogWarning(
-            "User denied access during Google OAuth authentication. Request Path: {RequestPath}",
-            context.Request.Path
-        );
-        
-        context.Response.Redirect("/api/auth/login?error=access_denied");
-        context.HandleResponse();
-        return Task.CompletedTask;
-    };
 });
 
 builder.Services.AddAuthorization();
@@ -213,59 +178,6 @@ app.MapScalarApiReference();
 // IMPORTANT: CORS must be called before Authentication and Authorization
 app.UseCors();
 
-// Add response headers for debugging CORS
-app.Use(async (context, next) =>
-{
-    // Log the incoming request
-    if (context.Request.Headers.ContainsKey("Origin"))
-    {
-        var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
-        logger.LogInformation(
-            "CORS Request received - Origin: {Origin}, Method: {Method}, Path: {Path}, Has Credentials: {HasCredentials}",
-            context.Request.Headers["Origin"],
-            context.Request.Method,
-            context.Request.Path,
-            context.Request.Headers.ContainsKey("Cookie")
-        );
-        
-        // Special logging for OPTIONS requests (preflight)
-        if (context.Request.Method == "OPTIONS")
-        {
-            logger.LogInformation(
-                "CORS Preflight (OPTIONS) - Origin: {Origin}, Access-Control-Request-Method: {RequestMethod}, Access-Control-Request-Headers: {RequestHeaders}",
-                context.Request.Headers["Origin"],
-                context.Request.Headers["Access-Control-Request-Method"],
-                context.Request.Headers["Access-Control-Request-Headers"]
-            );
-        }
-    }
-    
-    await next();
-    
-    // Log the response headers after CORS middleware has processed them
-    if (context.Request.Headers.ContainsKey("Origin"))
-    {
-        var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
-        var allowOrigin = context.Response.Headers["Access-Control-Allow-Origin"].ToString();
-        var allowCredentials = context.Response.Headers["Access-Control-Allow-Credentials"].ToString();
-        var allowMethods = context.Response.Headers["Access-Control-Allow-Methods"].ToString();
-        
-        logger.LogInformation(
-            "CORS Response - Origin: {Origin}, Method: {Method}, Path: {Path}, " +
-            "Access-Control-Allow-Origin: '{AllowOrigin}', " +
-            "Access-Control-Allow-Credentials: '{AllowCredentials}', " +
-            "Access-Control-Allow-Methods: '{AllowMethods}', " +
-            "Status: {StatusCode}",
-            context.Request.Headers["Origin"],
-            context.Request.Method,
-            context.Request.Path,
-            string.IsNullOrEmpty(allowOrigin) ? "(not set)" : allowOrigin,
-            string.IsNullOrEmpty(allowCredentials) ? "(not set)" : allowCredentials,
-            string.IsNullOrEmpty(allowMethods) ? "(not set)" : allowMethods,
-            context.Response.StatusCode
-        );
-    }
-});
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -545,8 +457,6 @@ app.MapPut("/api/resumes/update/{resumeId:guid}", async (Guid resumeId, Resume r
 })
 .WithName("UpdateResume")
 .WithTags("Resumes")
-.WithSummary("Create a new resume")
-.WithDescription("Creates a new resume for the specified user with all personal details, education, employment, skills, languages, and hobbies")
 .Produces<Resume>(201)
 .Produces(400)
 .Produces(500);
