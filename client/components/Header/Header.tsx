@@ -63,11 +63,14 @@ export default function Header() {
                     <LanguageSwitcher />
                     {user ? (
                         <div className="flex items-center gap-2">
-                            <img
-                                src={user.picture || '/default-avatar.png'}
-                                alt="User Avatar"
-                                className="w-8 h-8 rounded-full border border-gray-300"
-                            />
+                            <Link href="/user-dashboard" className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                                <img
+                                    src={user.picture || '/default-avatar.png'}
+                                    alt="User Avatar"
+                                    className="w-6 h-6 rounded-full border border-gray-300"
+                                />
+                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Profile</span>
+                            </Link>
                             <Button
                                 onClick={async () => { await authService.logout(); setUser(null); }}
                                 className="px-3 py-1 rounded-lg bg-red-500 text-white text-sm hover:bg-red-600"
@@ -116,14 +119,17 @@ export default function Header() {
                                 </div>
                                 {user ? (
                                     <div className="flex flex-col items-center justify-center py-2 gap-2">
-                                        <img
-                                            src={user.picture || '/default-avatar.png'}
-                                            alt="User Avatar"
-                                            className="w-8 h-8 rounded-full border border-gray-300"
-                                        />
+                                        <Link href="/user-dashboard" className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors w-full justify-center">
+                                            <img
+                                                src={user.picture || '/default-avatar.png'}
+                                                alt="User Avatar"
+                                                className="w-6 h-6 rounded-full border border-gray-300"
+                                            />
+                                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Profile</span>
+                                        </Link>
                                        <Button
                                 onClick={async () => { await authService.logout(); setUser(null); }}
-                                className="px-3 py-1 rounded-lg bg-red-500 text-white text-sm hover:bg-red-600"
+                                className="px-3 py-1 rounded-lg bg-red-500 text-white text-sm hover:bg-red-600 w-full"
                                 title='Logout'
                             />
                                     </div>
