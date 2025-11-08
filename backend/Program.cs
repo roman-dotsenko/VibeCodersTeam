@@ -136,6 +136,37 @@ builder.Services.AddAuthentication(options =>
     googleOptions.ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
     googleOptions.ClaimActions.MapJsonKey("picture", "picture");
     
+    // Handle successful authentication - create user in database
+    googleOptions.Events.OnTicketReceived = async context =>
+    {
+        var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+        var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+        
+        var email = context.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+        var name = context.Principal?.FindFirst(ClaimTypes.Name)?.Value;
+        
+        logger.LogInformation(
+            "Google OAuth ticket received. Email: {Email}, Name: {Name}, RedirectUri: {RedirectUri}",
+            email ?? "Unknown",
+            name ?? "Unknown",
+            context.ReturnUri
+        );
+        
+        // Get or create user in database
+        if (!string.IsNullOrEmpty(email))
+        {
+            try
+            {
+                var dbUser = await userService.GetOrCreateUserAsync(email);
+                logger.LogInformation("User loaded/created in database. User ID: {UserId}", dbUser.Id);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to get or create user in database. Email: {Email}", email);
+            }
+        }
+    };
+    
     // Add event handlers for authentication failures
     googleOptions.Events.OnRemoteFailure = context =>
     {
@@ -249,9 +280,12 @@ app.MapGet("/api/auth/login", async (HttpContext context, ILogger<Program> logge
         context.Request.Headers["User-Agent"].ToString()
     );
     
+    var config = context.RequestServices.GetRequiredService<IConfiguration>();
+    var frontendUrl = config.GetSection("Cors:AllowedOrigins").Get<string[]>()?[0] ?? "http://localhost:3000";
+    
     var properties = new AuthenticationProperties
     {
-        RedirectUri = "/api/auth/callback",
+        RedirectUri = $"{frontendUrl}/auth/callback", // Redirect directly to frontend after OAuth completes
         IsPersistent = true,
         AllowRefresh = true
     };
@@ -260,97 +294,6 @@ app.MapGet("/api/auth/login", async (HttpContext context, ILogger<Program> logge
 })
 .WithTags("Authentication");
 
-
-// OAuth callback endpoint - handles the redirect from Google
-app.MapGet("/api/auth/callback", async (HttpContext context, IUserService userService, ILogger<Program> logger) =>
-{
-    var config = context.RequestServices.GetRequiredService<IConfiguration>();
-    var frontendUrl = config.GetSection("Cors:AllowedOrigins").Get<string[]>()?[0] ?? "http://localhost:3000";
-    
-    // Log the authentication state BEFORE processing
-    logger.LogInformation(
-        "OAuth callback received. IsAuthenticated: {IsAuth}, Request scheme: {Scheme}, Host: {Host}",
-        context.User.Identity?.IsAuthenticated ?? false,
-        context.Request.Scheme,
-        context.Request.Host
-    );
-    
-    if (!context.User.Identity?.IsAuthenticated ?? true)
-    {
-        logger.LogWarning(
-            "OAuth callback failed - user not authenticated after OAuth callback. Request Path: {RequestPath}",
-            context.Request.Path
-        );
-        
-        // Redirect to frontend with error.
-        return Results.Redirect($"{frontendUrl}/login?error=auth_failed");
-    }
-    
-    var email = context.User.FindFirst(ClaimTypes.Email)?.Value;
-    var name = context.User.FindFirst(ClaimTypes.Name)?.Value;
-    
-    logger.LogInformation(
-        "User successfully authenticated via OAuth. Email: {Email}, Name: {Name}, Claims: {Claims}",
-        email ?? "Unknown",
-        name ?? "Unknown",
-        string.Join(", ", context.User.Claims.Select(c => $"{c.Type}={c.Value}"))
-    );
-    
-    // Get or create user in database
-    try
-    {
-        if (!string.IsNullOrEmpty(email))
-        {
-            var dbUser = await userService.GetOrCreateUserAsync(email);
-            logger.LogInformation("User loaded/created in database. User ID: {UserId}", dbUser.Id);
-        }
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(
-            ex,
-            "Failed to get or create user in database during OAuth callback. Email: {Email}",
-            email
-        );
-    }
-    
-    // Log the cookies that will be set
-    var setCookieHeaders = context.Response.Headers["Set-Cookie"].ToArray();
-    logger.LogInformation(
-        "OAuth callback setting cookies. Set-Cookie headers count: {Count}, Values: [{Cookies}]",
-        setCookieHeaders.Length,
-        string.Join(" | ", setCookieHeaders.Select(h => h != null ? h.Substring(0, Math.Min(100, h.Length)) + "..." : "null"))
-    );
-    
-    // Return an HTML page that will handle the redirect and ensure cookie is set
-    var html = $@"
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Authentication Successful</title>
-    <script>
-        console.log('OAuth callback success page loaded');
-        console.log('Cookies:', document.cookie);
-        
-        // Give the browser a moment to set the cookie, then redirect
-        setTimeout(function() {{
-            console.log('Redirecting to frontend...');
-            window.location.href = '{frontendUrl}/auth/callback';
-        }}, 500); // Increased to 500ms for better reliability
-    </script>
-</head>
-<body>
-    <p>Authentication successful! Redirecting...</p>
-    <p>If you are not redirected, <a href='{frontendUrl}/auth/callback'>click here</a>.</p>
-</body>
-</html>";
-    
-    return Results.Content(html, "text/html");
-})
-.WithTags("Authentication")
-.WithSummary("OAuth callback endpoint")
-.WithDescription("Handles the redirect from Google OAuth and sets authentication cookie")
-.ExcludeFromDescription();
 
 // Success endpoint after login (deprecated - keeping for backward compatibility)
 app.MapGet("/api/auth/success", (HttpContext context, ILogger<Program> logger) =>
