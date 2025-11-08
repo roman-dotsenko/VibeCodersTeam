@@ -28,7 +28,6 @@ export default function AIAgent() {
         const userMessage = inputValue.trim()
         setInputValue('')
         
-        // Add user message to chat
         setMessages(prev => [...prev, { role: 'user', content: userMessage }])
         setIsLoading(true)
 
@@ -50,15 +49,12 @@ export default function AIAgent() {
 
             const data = await response.json()
             
-            // Save chat_id for subsequent messages
             if (data.chat_id && !chatId) {
                 setChatId(data.chat_id)
             }
 
-            // Add assistant response to chat
             setMessages(prev => [...prev, { role: 'assistant', content: data.response }])
             
-            // Check if interview is finished
             if (data.finished) {
                 setIsFinished(true)
             }
