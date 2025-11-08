@@ -29,11 +29,21 @@ jobs:
           npm ci
           npm run build
       
+      - name: Prepare deployment package
+        shell: bash
+        run: |
+          mkdir -p deploy
+          cp -r client/.next/standalone/* deploy/
+          cp -r client/.next/static deploy/.next/static
+          cp -r client/public deploy/public || true
+          cp client/package*.json deploy/
+          cp client/web.config deploy/ || true
+      
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: ./client
+          path: ./deploy
 
   deploy:
     runs-on: ubuntu-latest
@@ -62,4 +72,5 @@ jobs:
           app-name: 'jobhelper-fe'
           slot-name: 'Production'
           package: .
+          startup-command: 'node server.js'
           
