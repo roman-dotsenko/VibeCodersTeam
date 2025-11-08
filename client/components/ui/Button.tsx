@@ -6,12 +6,14 @@ type ButtonProps = {
     className: string,
     title: string,
     to?: string,
+    disabled?: boolean,
 }
 
-export default function Button({onClick, className, title, to}: ButtonProps) {
+export default function Button({onClick, className, title, to, disabled}: ButtonProps) {
   return (
     !to ? (
       <button
+          disabled={disabled}
           onClick={onClick}
           className={className}
         >
