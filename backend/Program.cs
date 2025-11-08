@@ -540,7 +540,7 @@ app.MapPut("/api/resumes/{resumeId:guid}", async (Guid resumeId, Resume resume, 
 {
     try
     {
-        var createdResume = await resumeService.UpdateResumeAsync(userId, resumeId, resume);
+        var createdResume = await resumeService.UpdateResumeAsync(resumeId, resume);
         return Results.Created($"/api/resumes/{createdResume.Id}", createdResume);
     }
     catch (InvalidOperationException ex)
