@@ -15,4 +15,9 @@ public class Resume
     public List<Language> Languages { get; set; } = new();
 
     public List<string> Hobbies { get; set; } = new();
+
+    /// <summary>
+    /// Template id. Used to select resume template when generating PDF
+    /// </summary>
+    public int TemplateId { get; set; }
 }

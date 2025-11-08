@@ -1,0 +1,13 @@
+{
+  "Header": {
+     "dashboard": "Dashboard",
+     "agent": "AI-Agent"
+  },
+  "HomePage": {
+    "title": "Hello world!"
+  },
+  "DashboardPage": {
+    "title": "Welcome to the Dashboard",
+    "createResume": "Create new resume"
+  }
+}
