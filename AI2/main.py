@@ -26,8 +26,8 @@ class ChatRequest(BaseModel):
     message: str
 
 class QuizRequest(BaseModel):
+    theme: str
     quiz_id: Optional[str] = None
-    message: str
 
 class EnhanceCVFields(BaseModel):
     field: str
@@ -64,18 +64,46 @@ async def chat(req: ChatRequest):
 
 @app.post("/quiz")
 async def quiz(req: QuizRequest):
+    import json
+    
     response = ""
     if req.quiz_id is None:
         quiz_id = str(uuid.uuid4())
-        response = get_quiz(req.message)
+        response = get_quiz(req.theme)
         quizzes[quiz_id] = quiz_id
+        
+        # Parse the JSON response from the AI
+        try:
+            quiz_data = json.loads(response.text)
+            return {
+                "quiz_id": quiz_id,
+                "quiz": quiz_data
+            }
+        except json.JSONDecodeError:
+            # If JSON parsing fails, try to extract JSON from the text
+            text = response.text.strip()
+            # Remove markdown code blocks if present
+            if text.startswith("```json"):
+                text = text[7:]
+            if text.startswith("```"):
+                text = text[3:]
+            if text.endswith("```"):
+                text = text[:-3]
+            text = text.strip()
+            
+            try:
+                quiz_data = json.loads(text)
+                return {
+                    "quiz_id": quiz_id,
+                    "quiz": quiz_data
+                }
+            except json.JSONDecodeError as e:
+                return {
+                    "error": f"Failed to parse quiz JSON: {str(e)}",
+                    "raw_response": response.text
+                }
     else:
         return {"error": "Invalid quiz id"}
-
-    return{
-        "quiz_id": quiz_id,
-        "response": response.text
-    }
 
 
 @app.post("/enhance")

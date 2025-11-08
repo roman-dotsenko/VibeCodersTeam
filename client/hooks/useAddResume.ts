@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export interface Resume {
   id: string;
+  templateId: number;
   personalDetails: {
     name: string;
     emailAddress: string;
@@ -106,5 +107,44 @@ export function useAddResume() {
     }
   };
 
-  return { addResume, loading, error, data };
+  const updateResume = async (resumeId: string, body: Resume) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "https://job-helper-app.azurewebsites.net";
+      const url = `${backendUrl}/api/resumes/update/${resumeId}`;
+      
+      console.log("Updating resume at:", url);
+      console.log("Resume data:", JSON.stringify(body, null, 2));
+      
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Backend error:", errorText);
+        throw new Error(`Failed to update resume: ${response.status} ${errorText}`);
+      }
+      
+      const result = await response.json();
+      console.log("Resume updated successfully:", result);
+      setData(result);
+      return result;
+    } catch (err: any) {
+      console.error("Error updating resume:", err);
+      setError(err.message || "Unknown error");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { addResume, updateResume, loading, error, data };
 }
+

@@ -53,6 +53,9 @@ export default function Header() {
                 <Link href="/agent" className="text-gray-700 dark:text-gray-300 transition hover:text-indigo-600 hover:font-bold">
                     {t('agent')}
                 </Link>
+                <Link href="/quiz" className="text-gray-700 dark:text-gray-300 transition hover:text-indigo-600 hover:font-bold">
+                    {t('quiz') || 'Quiz'}
+                </Link>
             </nav>
 
             <div className="flex items-center gap-3">
@@ -104,6 +107,9 @@ export default function Header() {
                                 </Link>
                                 <Link href="/agent" className="block text-gray-700 dark:text-gray-300 py-2 px-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
                                     {t('agent')}
+                                </Link>
+                                <Link href="/quiz" className="block text-gray-700 dark:text-gray-300 py-2 px-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {t('quiz') || 'Quiz'}
                                 </Link>
                                 <div className="pt-2 border-t border-neutral-100 dark:border-neutral-700">
                                     <LanguageSwitcher />

@@ -1,12 +1,14 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useAddResume, Resume } from "@/hooks/useAddResume";
+import { useGetResumes } from "@/hooks/useGetResumes";
 import Input, { InputType } from "@/components/ui/Input";
 import {jsPDF} from "jspdf";
 import {toPng}  from "html-to-image";
 import { useTranslations } from "next-intl";
 import Button from "@/components/ui/Button";
 import { authService, User } from "@/lib/auth";
+import { useSearchParams } from "next/navigation";
 
 
 export default function CreateResume() {
@@ -18,6 +20,8 @@ export default function CreateResume() {
   const previewRef = useRef<HTMLDivElement>(null);
   const t = useTranslations('CreateResume');
   const [user, setUser] = useState<User | null>(null);
+  const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
       const cachedUser = authService.getUser();
@@ -34,6 +38,14 @@ export default function CreateResume() {
           }
         })
     }, []);
+
+  // Check for resumeId in URL parameters
+  useEffect(() => {
+    const resumeIdFromUrl = searchParams.get('resumeId');
+    if (resumeIdFromUrl) {
+      setSelectedResumeId(resumeIdFromUrl);
+    }
+  }, [searchParams]);
 
   const [resume, setResume] = useState({
     fullName: "",
@@ -66,9 +78,65 @@ export default function CreateResume() {
     employment: [],
   });
 
-  const { addResume, loading, error, data } = useAddResume();
+  const { addResume, updateResume, loading, error, data } = useAddResume();
+  const { resumes, refetch: refetchResumes } = useGetResumes(user?.id);
+  
+  // Load existing resume data into form when editing
+  useEffect(() => {
+    if (selectedResumeId && resumes.length > 0) {
+      console.log("📋 Loading resume data for ID:", selectedResumeId);
+      const existingResume = resumes.find(r => r.id === selectedResumeId);
+      
+      if (existingResume) {
+        console.log("✅ Found resume:", existingResume);
+        const pd = existingResume.personalDetails;
+      
+      setResume({
+        fullName: pd.name || "",
+        email: pd.emailAddress || "",
+        phone: pd.phoneNumber || "",
+        address: pd.address || "",
+        linkedin: pd.linkedIn || "",
+        portfolio: pd.website || "",
+        school: existingResume.educations?.[0]?.school || "",
+        education: existingResume.educations?.[0]?.educationName || "",
+        university: existingResume.educations?.[0]?.school || "",
+        degree: existingResume.educations?.[0]?.educationName || "",
+        startDate: existingResume.educations?.[0]?.startDate || "",
+        endDate: existingResume.educations?.[0]?.endDate || "",
+        description: existingResume.educations?.[0]?.description || "",
+        desiredJobPosition: pd.desiredJobPosition || "",
+        postCode: pd.postCode || "",
+        city: pd.city || "",
+        dateOfBirth: pd.dateOfBirth || "",
+        driverLicense: pd.driverLicense || "",
+        gender: pd.gender || "",
+        nationality: pd.nationality || "",
+        civilStatus: pd.civilStatus || "",
+        website: pd.website || "",
+        profileImage: "",
+        customFields: [],
+        skills: existingResume.skills?.map(s => s.name).join(", ") as any || [],
+        languages: existingResume.languages?.map(l => l.name).join(", ") as any || [],
+        hobbies: existingResume.hobbies?.join(", ") as any || [],
+        employment: existingResume.employment?.map(e => e.jobTitle).join(", ") as any || [],
+      });
+      
+        // Set template based on templateId
+        if (existingResume.templateId === 2) {
+          setSelectedTemplate('modern');
+        } else {
+          setSelectedTemplate('classic');
+        }
+        console.log("✅ Form populated with existing resume data");
+      } else {
+        console.log("⚠️ Resume not found in loaded resumes");
+      }
+    }
+  }, [selectedResumeId, resumes]);
+  
   // Helper to convert local resume state to API format
-  function toApiResume(local: typeof resume): any {
+  function toApiResume(local: typeof resume, template: 'classic' | 'modern', existingId?: string | null): any {
     // Build educations array only if there's data
     const educations = [];
     if (local.education || local.university || local.degree || local.school) {
@@ -84,7 +152,8 @@ export default function CreateResume() {
     }
 
     return {
-      id: crypto.randomUUID(),
+      id: existingId || crypto.randomUUID(),
+      templateId: template === 'classic' ? 1 : 2,
       personalDetails: {
         name: local.fullName || "",
         emailAddress: local.email || "",
@@ -148,17 +217,40 @@ export default function CreateResume() {
       return;
     }
 
+    console.log("=== SAVE RESUME DEBUG ===");
+    console.log("selectedResumeId:", selectedResumeId);
+    console.log("Will use:", selectedResumeId ? "PUT (update)" : "POST (create)");
+
     try {
-      const apiResume = toApiResume(resume);
-      console.log("Submitting resume:", apiResume);
-      const result = await addResume(user?.id, apiResume);
-      alert(`Resume "${resume.fullName}" added successfully! ID: ${result?.id || 'N/A'}`);
+      let result;
       
-      // Optionally reset the form
-      // setResume({ ... initial state ... });
+      if (selectedResumeId) {
+        // Update existing resume - use the existing ID
+        const apiResume = toApiResume(resume, selectedTemplate, selectedResumeId);
+        console.log("🔄 Updating resume with ID:", selectedResumeId);
+        console.log("API Resume data:", apiResume);
+        result = await updateResume(selectedResumeId, apiResume);
+        console.log("Update result:", result);
+        alert(`Resume "${resume.fullName}" updated successfully! ID: ${selectedResumeId}`);
+      } else {
+        // Create new resume - generate new ID
+        const apiResume = toApiResume(resume, selectedTemplate);
+        console.log("Creating new resume");
+        console.log("API Resume data:", apiResume);
+        result = await addResume(user?.id, apiResume);
+        const resumeId = result?.id;
+        console.log("Create result:", result);
+        alert(`Resume "${resume.fullName}" added successfully! ID: ${resumeId}`);
+        setSelectedResumeId(resumeId);
+      }
+      
+      // Refresh the resume list
+      console.log("Refreshing resume list...");
+      await refetchResumes();
+      console.log("Resume list refreshed");
     } catch (err: any) {
-      console.error("Error adding resume:", err);
-      alert(`Failed to add resume: ${err?.message || 'Unknown error'}`);
+      console.error("Error saving resume:", err);
+      alert(`Failed to save resume: ${err?.message || 'Unknown error'}`);
     }
   };
 
@@ -317,6 +409,27 @@ export default function CreateResume() {
   return (
     <div className="flex flex-col h-full  min-h-screen items-start justify-start bg-zinc-50 font-sans dark:bg-black dark:text-white p-6 gap-6">
       <h1 className="text-3xl font-semibold mb-4">{t('pageTitle')}</h1>
+      
+      {/* Resume Selector */}
+      {resumes && resumes.length > 0 && (
+        <div className="w-full max-w-md">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Select Existing Resume (or leave empty to create new)
+          </label>
+          <select
+            value={selectedResumeId || ""}
+            onChange={(e) => setSelectedResumeId(e.target.value || null)}
+            className="w-full px-3 py-2 rounded-md border border-neutral-200 bg-white text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors dark:bg-zinc-800 dark:border-gray-700 dark:text-neutral-200"
+          >
+            <option value="">-- Create New Resume --</option>
+            {resumes.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.personalDetails.name || 'Untitled'} (ID: {r.id.substring(0, 8)}...)
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
       
       {/* Template Selector */}
       <div className="flex gap-4 mb-4">
