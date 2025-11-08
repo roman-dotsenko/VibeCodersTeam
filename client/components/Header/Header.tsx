@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import LanguageSwitcher from '../Language/LanguageSwitcher'
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import Button from '../ui/Button';
 
 export default function Header() {
     const t = useTranslations('Header');
@@ -85,6 +86,7 @@ export default function Header() {
                         </div>
                     )}
                 </div>
+                <Button title=''/>
             </div>
         </header>
     )
