@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using JobHelper.Data;
 using JobHelper.Services;
-using JobHelper.Models;
 using Microsoft.EntityFrameworkCore;
 using JobHelper.ApiModels;
 using Scalar.AspNetCore;
+using JobHelper.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,7 +75,7 @@ builder.Services.AddAuthentication(options =>
     options.LoginPath = "/api/auth/login";
     options.LogoutPath = "/api/auth/logout";
     options.Cookie.Name = "JobHelper.Auth";
-    options.Cookie.HttpOnly = false;
+    options.Cookie.HttpOnly = true;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // HTTPS only (required for SameSite=None)
     options.Cookie.SameSite = SameSiteMode.None; // Required for cross-origin requests
     options.Cookie.IsEssential = true; // Mark as essential for GDPR compliance
@@ -169,12 +169,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Map OpenAPI endpoint
-app.MapOpenApi();
-
-// Add Scalar API documentation UI (modern alternative to Swagger UI)
-app.MapScalarApiReference();
-
 // IMPORTANT: CORS must be called before Authentication and Authorization
 app.UseCors();
 
@@ -193,8 +187,9 @@ app.MapGet("/api/auth/login", async (HttpContext context, ILogger<Program> logge
     );
     
     var config = context.RequestServices.GetRequiredService<IConfiguration>();
-    var frontendUrl = config.GetSection("Cors:AllowedOrigins").Get<string[]>()?[0] ?? "http://localhost:3000";
-    
+    var frontendUrl = context.RequestServices.GetRequiredService<IConfiguration>()
+        .GetSection("FrontendUrl").Get<string>() ?? "https://localhost:3000";
+
     var properties = new AuthenticationProperties
     {
         RedirectUri = $"{frontendUrl}/auth/callback", // Redirect directly to frontend after OAuth completes
@@ -230,7 +225,7 @@ app.MapGet("/api/auth/success", (HttpContext context, ILogger<Program> logger) =
     
     // Redirect to frontend home page after successful login
     var frontendUrl = context.RequestServices.GetRequiredService<IConfiguration>()
-        .GetSection("Cors:AllowedOrigins").Get<string[]>()?[0] ?? "http://localhost:3000";
+        .GetSection("FrontendUrl").Get<string>() ?? "https://localhost:3000";
     
     return Results.Redirect(frontendUrl);
 })
@@ -306,7 +301,8 @@ app.MapGet("/api/auth/me", async (HttpContext context, IUserService userService,
     User? dbUser = null;
     try
     {
-        dbUser = await userService.GetOrCreateUserAsync(email);
+        var domainUser = await userService.GetOrCreateUserAsync(email);
+        dbUser = domainUser.ToApiModel();
         logger.LogInformation("User loaded from database. User ID: {UserId}", dbUser.Id);
     }
     catch (Exception ex)
@@ -355,12 +351,7 @@ app.MapGet("/api/users/{userId:guid}/resumes", async (Guid userId, IResumeServic
     try
     {
         var resumes = await resumeService.GetResumesByUserIdAsync(userId);
-
-        return Results.Ok(resumes.Select(r => new LightResumeApiModel
-        {
-            Id = r.Id,
-            Name = r.PersonalDetails.Name,
-        }));
+        return Results.Ok(resumes.Select(r => r.ToApiModel()).ToList());
     }
     catch (Exception ex)
     {
@@ -375,34 +366,7 @@ app.MapGet("/api/users/{userId:guid}/resumes", async (Guid userId, IResumeServic
 .WithTags("Resumes")
 .WithSummary("Get all resumes for a user")
 .WithDescription("Retrieves all resumes associated with a specific user ID")
-.Produces<List<LightResumeApiModel>>(200)
-.Produces(500);
-
-// Get a specific resume by ID
-app.MapGet("/api/resumes/{resumeId:guid}", async (Guid resumeId, IResumeService resumeService) =>
-{
-    try
-    {
-        var resume = await resumeService.GetResumeByIdAsync(resumeId);
-        return resume is not null 
-            ? Results.Ok(resume) 
-            : Results.NotFound(new { message = $"Resume with ID {resumeId} not found" });
-    }
-    catch (Exception ex)
-    {
-        return Results.Problem(
-            detail: ex.Message,
-            statusCode: 500,
-            title: "Error retrieving resume"
-        );
-    }
-})
-.WithName("GetResume")
-.WithTags("Resumes")
-.WithSummary("Get a specific resume by ID")
-.WithDescription("Retrieves detailed information about a specific resume including all sections (personal details, education, employment, skills, languages, hobbies)")
-.Produces<Resume>(200)
-.Produces(404)
+.Produces<List<Resume>>(200)
 .Produces(500);
 
 // Create a new resume for a user
@@ -410,8 +374,10 @@ app.MapPost("/api/users/{userId:guid}/resumes", async (Guid userId, Resume resum
 {
     try
     {
-        var createdResume = await resumeService.CreateResumeAsync(userId, resume);
-        return Results.Created($"/api/resumes/{createdResume.Id}", createdResume);
+        var domainResume = resume.ToDomainModel();
+        var createdResume = await resumeService.CreateResumeAsync(userId, domainResume);
+        var apiResume = createdResume.ToApiModel();
+        return Results.Created($"/api/resumes/{apiResume.Id}", apiResume);
     }
     catch (InvalidOperationException ex)
     {
@@ -439,8 +405,10 @@ app.MapPut("/api/resumes/update/{resumeId:guid}", async (Guid resumeId, Resume r
 {
     try
     {
-        var createdResume = await resumeService.UpdateResumeAsync(resumeId, resume);
-        return Results.Created($"/api/resumes/{createdResume.Id}", createdResume);
+        var domainResume = resume.ToDomainModel();
+        var updatedResume = await resumeService.UpdateResumeAsync(resumeId, domainResume);
+        var apiResume = updatedResume.ToApiModel();
+        return Results.Created($"/api/resumes/{apiResume.Id}", apiResume);
     }
     catch (InvalidOperationException ex)
     {
