@@ -600,7 +600,7 @@ app.MapPut("/api/resumes/update/{resumeId:guid}", async (Guid resumeId, Resume r
         );
     }
 })
-.WithName("CreateResume")
+.WithName("UpdateResume")
 .WithTags("Resumes")
 .WithSummary("Create a new resume")
 .WithDescription("Creates a new resume for the specified user with all personal details, education, employment, skills, languages, and hobbies")
