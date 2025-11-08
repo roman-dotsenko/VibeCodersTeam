@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/messages/en.json"],"sourcesContent":["{\"Header\":{\"dashboard\":\"Dashboard\",\"agent\":\"AI-Agent\"},\"HomePage\":{\"title\":\"Hello world!\"},\"DashboardPage\":{\"title\":\"Welcome to the Dashboard\",\"createResume\":\"Create new resume\"}}"],"names":[],"mappings":"AAAA"}},
-    {"offset": {"line": 3, "column": 205}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}
