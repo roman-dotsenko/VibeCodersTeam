@@ -78,6 +78,7 @@ builder.Services.AddAuthentication(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // HTTPS only (required for SameSite=None)
     options.Cookie.SameSite = SameSiteMode.None; // Required for cross-origin requests
     options.Cookie.IsEssential = true; // Mark as essential for GDPR compliance
+    options.Cookie.Path = "/"; // Make cookie available to all paths
     options.ExpireTimeSpan = TimeSpan.FromHours(24);
     options.SlidingExpiration = true;
     
@@ -289,8 +290,25 @@ app.MapGet("/api/auth/callback", async (HttpContext context, IUserService userSe
         );
     }
     
-    // Redirect to frontend success page
-    return Results.Redirect($"{frontendUrl}/auth/callback");
+    // Return an HTML page that will handle the redirect and ensure cookie is set
+    var html = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authentication Successful</title>
+    <script>
+        // Give the browser a moment to set the cookie, then redirect
+        setTimeout(function() {{
+            window.location.href = '{frontendUrl}/auth/callback';
+        }}, 100);
+    </script>
+</head>
+<body>
+    <p>Authentication successful! Redirecting...</p>
+</body>
+</html>";
+    
+    return Results.Content(html, "text/html");
 })
 .WithTags("Authentication")
 .WithSummary("OAuth callback endpoint")
