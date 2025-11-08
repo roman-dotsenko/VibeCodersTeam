@@ -6,6 +6,7 @@ import uuid
 from chat import create_chat
 from cv_enhancer import enhance_field
 from quiz import get_quiz
+from cv_parser import parse_cv_text
 
 app = FastAPI()
 
@@ -32,6 +33,9 @@ class QuizRequest(BaseModel):
 class EnhanceCVFields(BaseModel):
     field: str
     field_content: str
+
+class ParseCVRequest(BaseModel):
+    text: str
 
 
 @app.post("/chat")
@@ -113,4 +117,40 @@ async def enhance(req: EnhanceCVFields):
     return {
         "response": response.text
     }
+
+@app.post("/parse-cv")
+async def parse_cv(req: ParseCVRequest):
+    import json
+    
+    try:
+        response = parse_cv_text(req.text)
+        response_text = response.text.strip()
+        
+        # Remove markdown code blocks if present
+        if response_text.startswith("```json"):
+            response_text = response_text[7:]
+        if response_text.startswith("```"):
+            response_text = response_text[3:]
+        if response_text.endswith("```"):
+            response_text = response_text[:-3]
+        response_text = response_text.strip()
+        
+        # Parse JSON
+        parsed_data = json.loads(response_text)
+        
+        return {
+            "success": True,
+            "data": parsed_data
+        }
+    except json.JSONDecodeError as e:
+        return {
+            "success": False,
+            "error": f"Failed to parse response: {str(e)}",
+            "raw_response": response.text
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
 

@@ -39,6 +39,69 @@ export default function UserDashboardPage() {
     router.push('/login');
   };
 
+  const handleDeleteAccount = async () => {
+    if (!user?.id) {
+      alert('User not found');
+      return;
+    }
+
+    const confirmed = confirm(
+      'WARNING: This will permanently delete your account and ALL your data including:\n\n' +
+      '• All your resumes\n' +
+      '• All quiz results\n' +
+      '• Your profile information\n\n' +
+      'This action CANNOT be undone!\n\n' +
+      'Are you absolutely sure you want to delete your account?'
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    // Double confirmation
+    const doubleConfirm = confirm(
+      'This is your FINAL warning!\n\n' +
+      'Type your email in the next prompt to confirm account deletion.'
+    );
+
+    if (!doubleConfirm) {
+      return;
+    }
+
+    const emailConfirmation = prompt('Please type your email to confirm deletion:');
+    
+    if (emailConfirmation !== user.email) {
+      alert('Email does not match. Account deletion cancelled.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://job-helper-app.azurewebsites.net';
+      
+      const response = await fetch(`${backendUrl}/api/users/${user.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete account: ${response.status}`);
+      }
+
+      alert('✓ Your account has been successfully deleted.');
+      
+      // Logout and redirect
+      await authService.logout();
+      router.push('/login');
+    } catch (error: any) {
+      console.error('Error deleting account:', error);
+      alert(`Failed to delete account: ${error.message || 'Unknown error'}`);
+      setLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -147,8 +210,11 @@ export default function UserDashboardPage() {
               <button className="w-full rounded-lg bg-gray-100 px-4 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
                 Applications
               </button>
-              <button className="w-full rounded-lg bg-gray-100 px-4 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
-                Settings
+              <button 
+                onClick={handleDeleteAccount}
+                className="w-full rounded-lg bg-red-100 px-4 py-2 text-left text-sm font-medium text-red-700 transition-colors hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
+              >
+                Delete Account
               </button>
             </div>
           </div>

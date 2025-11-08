@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAddResume, Resume } from "@/hooks/useAddResume";
 import { useGetResumes } from "@/hooks/useGetResumes";
+import CVParser from "@/components/CVParser/CVParser";
 import Input, { InputType } from "@/components/ui/Input";
 import {jsPDF} from "jspdf";
 import {toPng}  from "html-to-image";
@@ -254,6 +255,39 @@ export default function CreateResume() {
     }
   };
 
+  const handleParsedCV = (data: any) => {
+    console.log('Received parsed CV data:', data);
+    
+    // Update resume state with parsed data
+    setResume((prev) => ({
+      ...prev,
+      fullName: data.fullName || prev.fullName,
+      email: data.email || prev.email,
+      phone: data.phone || prev.phone,
+      address: data.address || prev.address,
+      city: data.city || prev.city,
+      postCode: data.postCode || prev.postCode,
+      dateOfBirth: data.dateOfBirth || prev.dateOfBirth,
+      nationality: data.nationality || prev.nationality,
+      gender: data.gender || prev.gender,
+      driverLicense: data.driverLicense || prev.driverLicense,
+      civilStatus: data.civilStatus || prev.civilStatus,
+      linkedin: data.linkedin || prev.linkedin,
+      portfolio: data.portfolio || prev.portfolio,
+      website: data.website || prev.website,
+      desiredJobPosition: data.desiredJobPosition || prev.desiredJobPosition,
+      education: data.education || prev.education,
+      university: data.university || prev.university,
+      description: data.description || prev.description,
+      skills: data.skills ? data.skills.join(', ') : prev.skills,
+      languages: data.languages ? data.languages.join(', ') : prev.languages,
+      hobbies: data.hobbies ? data.hobbies.join(', ') : prev.hobbies,
+    }));
+    
+    // Show success message
+    alert('✨ CV information has been automatically filled!');
+  };
+
   const sections = [
     {
       title: "Profile Image",
@@ -409,6 +443,11 @@ export default function CreateResume() {
   return (
     <div className="flex flex-col h-full  min-h-screen items-start justify-start bg-zinc-50 font-sans dark:bg-black dark:text-white p-6 gap-6">
       <h1 className="text-3xl font-semibold mb-4">{t('pageTitle')}</h1>
+      
+      {/* AI CV Parser */}
+      <div className="w-full max-w-4xl">
+        <CVParser onParsed={handleParsedCV} />
+      </div>
       
       {/* Resume Selector */}
       {resumes && resumes.length > 0 && (
