@@ -11,6 +11,9 @@ import Button from "@/components/ui/Button";
 export default function CreateResume() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [openIndexes, setOpenIndexes] = useState<number[]>([]);
+  const [selectedTemplate, setSelectedTemplate] = useState<'classic' | 'modern'>(
+    'classic'
+  );
   const previewRef = useRef<HTMLDivElement>(null);
   const t = useTranslations('CreateResume');
 
@@ -36,6 +39,7 @@ export default function CreateResume() {
     nationality: "",
     civilStatus: "",
     website: "",
+    profileImage: "",
     customFields: [],
     skills: [],
     languages: [],
@@ -93,11 +97,17 @@ export default function CreateResume() {
 
   const sections = [
     {
+      title: "Profile Image",
+      fields: [
+        { label: "Upload Image", name: "profileImage", type: 'image' as any },
+      ],
+    },
+    {
       title: t('personalInfo'),
       fields: [
         { label: t('fullName'), name: "fullName", type: InputType.TEXT },
-        { label: t('email'), name: "email", type: InputType.EMAIL },
-        { label: t('phone'), name: "phone", type: InputType.TEXT },
+        { label: t('email'), name: "email", type: InputType.EMAIL, validation: 'email' },
+        { label: t('phone'), name: "phone", type: InputType.TEXT, validation: 'phone' },
         { label: t('address'), name: "address", type: InputType.TEXT },
         { label: t('linkedIn'), name: "linkedin", type: InputType.TEXT },
         { label: t('portfolio'), name: "portfolio", type: InputType.TEXT },
@@ -106,7 +116,7 @@ export default function CreateResume() {
         { label: "City", name: "city", type: InputType.TEXT },
         { label: "Date of Birth", name: "dateOfBirth", type: InputType.DATE },
         { label: "Driver License", name: "driverLicense", type: InputType.TEXT },
-        { label: "Gender", name: "gender", type: InputType.TEXT },
+        { label: "Gender", name: "gender", type: 'select' as any, options: ['Male', 'Female', 'Other', 'Prefer not to say'] },
         { label: "Nationality", name: "nationality", type: InputType.TEXT },
         { label: "Civil Status", name: "civilStatus", type: InputType.TEXT },
         { label: "Website", name: "website", type: InputType.TEXT },
@@ -134,31 +144,102 @@ export default function CreateResume() {
     },
   ];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    
+    // Validation for phone field - only numbers, spaces, +, -, ()
+    if (name === 'phone') {
+      const phoneRegex = /^[0-9\s+\-()]*$/;
+      if (!phoneRegex.test(value)) {
+        return; // Don't update if invalid
+      }
+    }
+    
     setResume((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Create an image to resize it for better quality
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          // Create canvas for high-quality resize
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          // Set canvas size (higher resolution for better quality)
+          const maxSize = 500; // Increased from typical 200-300
+          let width = img.width;
+          let height = img.height;
+          
+          if (width > height && width > maxSize) {
+            height = (height * maxSize) / width;
+            width = maxSize;
+          } else if (height > maxSize) {
+            width = (width * maxSize) / height;
+            height = maxSize;
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          
+          // Use better image smoothing
+          if (ctx) {
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Convert to base64 with high quality
+            const resizedImage = canvas.toDataURL('image/jpeg', 0.95);
+            setResume((prev) => ({ ...prev, profileImage: resizedImage }));
+          }
+        };
+        img.src = event.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleDownloadPDF = async () => {
     if (!previewRef.current) return;
 
     try {
-      const dataUrl = await toPng(previewRef.current, { cacheBust: true });
+      const dataUrl = await toPng(previewRef.current, { 
+        cacheBust: true,
+        quality: 1.0,
+        pixelRatio: 3,
+      });
+      
+      // Wait for image to load
       const img = new Image();
-      img.src = dataUrl;
-
+      await new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve();
+        img.onerror = reject;
+        img.src = dataUrl;
+      });
 
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "pt",
         format: "a4",
       });
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (img.height * pdfWidth) / img.width;
-      pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("resume.pdf");
-
       
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      // Calculate scaling to fit the page
+      const imgWidth = img.width;
+      const imgHeight = img.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      
+      const scaledWidth = imgWidth * ratio;
+      const scaledHeight = imgHeight * ratio;
+      
+      pdf.addImage(dataUrl, "PNG", 0, 0, scaledWidth, scaledHeight);
+      pdf.save("resume.pdf");
 
     } catch (error) {
        console.error("Failed to generate PDF:", error);
@@ -168,6 +249,31 @@ export default function CreateResume() {
   return (
     <div className="flex flex-col h-full  min-h-screen items-start justify-start bg-zinc-50 font-sans dark:bg-black dark:text-white p-6 gap-6">
       <h1 className="text-3xl font-semibold mb-4">{t('pageTitle')}</h1>
+      
+      {/* Template Selector */}
+      <div className="flex gap-4 mb-4">
+        <button
+          onClick={() => setSelectedTemplate('classic')}
+          className={`px-6 py-3 rounded-lg font-medium transition-all ${
+            selectedTemplate === 'classic'
+              ? 'bg-indigo-600 text-white shadow-md'
+              : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700'
+          }`}
+        >
+          Classic Template
+        </button>
+        <button
+          onClick={() => setSelectedTemplate('modern')}
+          className={`px-6 py-3 rounded-lg font-medium transition-all ${
+            selectedTemplate === 'modern'
+              ? 'bg-indigo-600 text-white shadow-md'
+              : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700'
+          }`}
+        >
+          Modern Template
+        </button>
+      </div>
+
       <div className="flex md:flex-row flex-col items-start justify-center w-full gap-6">
         <div className="w-full md:w-1/2 space-y-4">
         
@@ -207,21 +313,53 @@ export default function CreateResume() {
               } overflow-hidden`}
             >
               <div className="px-5 pb-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-                {section.fields.map((field, i) => (
+                {section.fields.map((field: any, i) => (
                   <div key={i} className="flex flex-col">
                     <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       {field.label}
                     </label>
-                    <Input
-                      inputType={field.type}
-                      placeholder={`${field.label}`}
-                      value={resume[field.name as keyof typeof resume]}
-                      onChange={handleChange}
-                      className="dark:bg-zinc-800 dark:border-gray-700"
-                      {...(field.type !== InputType.TEXTAREA
-                        ? { name: field.name }
-                        : { name: field.name })}
-                    />
+                    {field.type === 'image' ? (
+                      <div className="flex flex-col gap-2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="w-full px-3 py-2 rounded-md border border-neutral-200 bg-white text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors dark:bg-zinc-800 dark:border-gray-700 dark:text-neutral-200"
+                        />
+                        {resume.profileImage && (
+                          <img 
+                            src={resume.profileImage} 
+                            alt="Profile preview" 
+                            className="w-24 h-24 rounded-full object-cover border-2 border-indigo-600"
+                          />
+                        )}
+                      </div>
+                    ) : field.type === 'select' ? (
+                      <select
+                        name={field.name}
+                        value={resume[field.name as keyof typeof resume] as string || ''}
+                        onChange={handleChange}
+                        className="w-full px-3 py-2 rounded-md border border-neutral-200 bg-white text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors dark:bg-zinc-800 dark:border-gray-700 dark:text-neutral-200"
+                      >
+                        <option value="">Select {field.label}</option>
+                        {field.options?.map((option: string, idx: number) => (
+                          <option key={idx} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <Input
+                        inputType={field.type}
+                        placeholder={`${field.label}`}
+                        value={resume[field.name as keyof typeof resume] as string || ''}
+                        onChange={handleChange}
+                        className="dark:bg-zinc-800 dark:border-gray-700"
+                        {...(field.type !== InputType.TEXTAREA
+                          ? { name: field.name }
+                          : { name: field.name })}
+                      />
+                    )}
                   </div>
                 ))}
               </div>
@@ -234,98 +372,235 @@ export default function CreateResume() {
   ref={previewRef}
   className="w-full md:w-1/2 bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6 overflow-auto max-h-[700px]"
 >
-  <div>
-    {/* Header */}
-    <h3 className="text-2xl font-bold">{resume.fullName || "Your Name"}</h3>
-    <p className="text-sm text-gray-600 dark:text-gray-400">
-      {resume.email && `${resume.email} | `}
-      {resume.phone && `${resume.phone} | `}
-      {resume.address}
-    </p>
-    <p className="text-sm text-indigo-600 mt-1">
-      {resume.linkedin && `LinkedIn: ${resume.linkedin}`}
-      {resume.portfolio && ` | Portfolio: ${resume.portfolio}`}
-    </p>
+  {selectedTemplate === 'classic' ? (
+    // Classic Template
+    <div>
+      {/* Header */}
+      <h3 className="text-2xl font-bold">{resume.fullName || "Your Name"}</h3>
+      <p className="text-sm text-gray-600 dark:text-gray-400">
+        {resume.email && `${resume.email} | `}
+        {resume.phone && `${resume.phone} | `}
+        {resume.address}
+      </p>
+      <p className="text-sm text-indigo-600 mt-1">
+        {resume.linkedin && `LinkedIn: ${resume.linkedin}`}
+        {resume.portfolio && ` | Portfolio: ${resume.portfolio}`}
+        {resume.website && ` | Website: ${resume.website}`}
+      </p>
+      {(resume.nationality || resume.civilStatus || resume.driverLicense) && (
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          {resume.nationality && `Nationality: ${resume.nationality}`}
+          {resume.nationality && resume.civilStatus && ` | `}
+          {resume.civilStatus && `Civil Status: ${resume.civilStatus}`}
+          {(resume.nationality || resume.civilStatus) && resume.driverLicense && ` | `}
+          {resume.driverLicense && `Driver License: ${resume.driverLicense}`}
+        </p>
+      )}
 
-    {/* Education */}
-    <div className="mt-6">
-      <h4 className="text-lg font-semibold">Education</h4>
-      <p className="text-gray-700 dark:text-gray-300">
-        {resume.degree && `${resume.degree}, `}
-        {resume.university}
-      </p>
-      <p className="text-sm text-gray-500">
-        {resume.startDate} - {resume.endDate}
-      </p>
-      <p className="mt-2 text-gray-700 dark:text-gray-300 whitespace-pre-line">
-        {resume.description}
-      </p>
+      {/* Education */}
+      <div className="mt-6">
+        <h4 className="text-lg font-semibold">Education</h4>
+        <p className="text-gray-700 dark:text-gray-300">
+          {resume.degree && `${resume.degree}, `}
+          {resume.university}
+        </p>
+        <p className="text-sm text-gray-500">
+          {resume.startDate} - {resume.endDate}
+        </p>
+        <p className="mt-2 text-gray-700 dark:text-gray-300 whitespace-pre-line">
+          {resume.description}
+        </p>
+      </div>
+
+      {/* Skills */}
+      {resume.skills && resume.skills.length > 0 && (
+        <div className="mt-6">
+          <h4 className="text-lg font-semibold">Skills</h4>
+          <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+            {resume.skills
+              .toString()
+              .split(",")
+              .map((skill, i) => (
+                <li key={i}>{skill.trim()}</li>
+              ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Languages */}
+      {resume.languages && resume.languages.length > 0 && (
+        <div className="mt-6">
+          <h4 className="text-lg font-semibold">Languages</h4>
+          <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+            {resume.languages
+              .toString()
+              .split(",")
+              .map((lang, i) => (
+                <li key={i}>{lang.trim()}</li>
+              ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Hobbies */}
+      {resume.hobbies && resume.hobbies.length > 0 && (
+        <div className="mt-6">
+          <h4 className="text-lg font-semibold">Hobbies</h4>
+          <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+            {resume.hobbies
+              .toString()
+              .split(",")
+              .map((hob, i) => (
+                <li key={i}>{hob.trim()}</li>
+              ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Employment */}
+      {resume.employment && resume.employment.length > 0 && (
+        <div className="mt-6">
+          <h4 className="text-lg font-semibold">Employment</h4>
+          <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+            {resume.employment
+              .toString()
+              .split(",")
+              .map((emp, i) => (
+                <li key={i}>{emp.trim()}</li>
+              ))}
+          </ul>
+        </div>
+      )}
     </div>
+  ) : (
+    // Modern Template
+    <div className="grid grid-cols-3 gap-6">
+      {/* Left Sidebar */}
+      <div className="col-span-1 bg-indigo-900 text-white p-4 rounded-lg">
+        {/* Profile */}
+        <div className="mb-6">
+          <div className="w-24 h-24 bg-indigo-700 rounded-full mx-auto mb-3 flex items-center justify-center text-3xl font-bold overflow-hidden">
+            {resume.profileImage ? (
+              <img 
+                src={resume.profileImage} 
+                alt="Profile" 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span>{resume.fullName ? resume.fullName[0].toUpperCase() : "?"}</span>
+            )}
+          </div>
+          <h3 className="text-xl font-bold text-center">{resume.fullName || "Your Name"}</h3>
+          <p className="text-sm text-center text-indigo-300 mt-1">{resume.desiredJobPosition || "Job Position"}</p>
+        </div>
 
-    {/* Skills */}
-    {resume.skills && resume.skills.length > 0 && (
-      <div className="mt-6">
-        <h4 className="text-lg font-semibold">Skills</h4>
-        <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
-          {resume.skills
-            .toString()
-            .split(",")
-            .map((skill, i) => (
-              <li key={i}>{skill.trim()}</li>
-            ))}
-        </ul>
-      </div>
-    )}
+        {/* Contact */}
+        <div className="mb-6">
+          <h4 className="text-sm font-bold uppercase mb-2 border-b border-indigo-700 pb-1">Contact</h4>
+          <div className="space-y-2 text-sm">
+            {resume.phone && <p>📞 {resume.phone}</p>}
+            {resume.email && <p>📧 {resume.email}</p>}
+            {resume.address && <p>📍 {resume.address}</p>}
+            {resume.linkedin && <p>🔗 {resume.linkedin}</p>}
+            {resume.website && <p>🌐 {resume.website}</p>}
+            {resume.nationality && <p>🌍 {resume.nationality}</p>}
+            {resume.civilStatus && <p>💑 {resume.civilStatus}</p>}
+            {resume.driverLicense && <p>🚗 {resume.driverLicense}</p>}
+          </div>
+        </div>
 
-    {/* Languages */}
-    {resume.languages && resume.languages.length > 0 && (
-      <div className="mt-6">
-        <h4 className="text-lg font-semibold">Languages</h4>
-        <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
-          {resume.languages
-            .toString()
-            .split(",")
-            .map((lang, i) => (
-              <li key={i}>{lang.trim()}</li>
-            ))}
-        </ul>
-      </div>
-    )}
+        {/* Skills */}
+        {resume.skills && resume.skills.length > 0 && (
+          <div className="mb-6">
+            <h4 className="text-sm font-bold uppercase mb-2 border-b border-indigo-700 pb-1">Skills</h4>
+            <div className="flex flex-wrap gap-2">
+              {resume.skills
+                .toString()
+                .split(",")
+                .map((skill, i) => (
+                  <span key={i} className="bg-indigo-700 px-2 py-1 rounded text-xs">
+                    {skill.trim()}
+                  </span>
+                ))}
+            </div>
+          </div>
+        )}
 
-    {/* Hobbies */}
-    {resume.hobbies && resume.hobbies.length > 0 && (
-      <div className="mt-6">
-        <h4 className="text-lg font-semibold">Hobbies</h4>
-        <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
-          {resume.hobbies
-            .toString()
-            .split(",")
-            .map((hob, i) => (
-              <li key={i}>{hob.trim()}</li>
-            ))}
-        </ul>
-      </div>
-    )}
+        {/* Languages */}
+        {resume.languages && resume.languages.length > 0 && (
+          <div className="mb-6">
+            <h4 className="text-sm font-bold uppercase mb-2 border-b border-indigo-700 pb-1">Languages</h4>
+            <ul className="space-y-1 text-sm">
+              {resume.languages
+                .toString()
+                .split(",")
+                .map((lang, i) => (
+                  <li key={i}>• {lang.trim()}</li>
+                ))}
+            </ul>
+          </div>
+        )}
 
-    {/* Employment */}
-    {resume.employment && resume.employment.length > 0 && (
-      <div className="mt-6">
-        <h4 className="text-lg font-semibold">Employment</h4>
-        <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
-          {resume.employment
-            .toString()
-            .split(",")
-            .map((emp, i) => (
-              <li key={i}>{emp.trim()}</li>
-            ))}
-        </ul>
+        {/* Hobbies */}
+        {resume.hobbies && resume.hobbies.length > 0 && (
+          <div>
+            <h4 className="text-sm font-bold uppercase mb-2 border-b border-indigo-700 pb-1">Hobbies</h4>
+            <ul className="space-y-1 text-sm">
+              {resume.hobbies
+                .toString()
+                .split(",")
+                .map((hobby, i) => (
+                  <li key={i}>• {hobby.trim()}</li>
+                ))}
+            </ul>
+          </div>
+        )}
       </div>
-    )}
-  </div>
+
+      {/* Right Content */}
+      <div className="col-span-2">
+        {/* Education */}
+        <div className="mb-6">
+          <h4 className="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-3 border-b-2 border-indigo-900 dark:border-indigo-400 pb-1">
+            Education
+          </h4>
+          <div>
+            <p className="font-semibold text-gray-900 dark:text-gray-100">
+              {resume.degree} {resume.degree && resume.university && " - "} {resume.university}
+            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              {resume.startDate} {resume.startDate && resume.endDate && " - "} {resume.endDate}
+            </p>
+            <p className="mt-2 text-gray-700 dark:text-gray-300 text-sm whitespace-pre-line">
+              {resume.description}
+            </p>
+          </div>
+        </div>
+
+        {/* Employment */}
+        {resume.employment && resume.employment.length > 0 && (
+          <div className="mb-6">
+            <h4 className="text-xl font-bold text-indigo-900 dark:text-indigo-400 mb-3 border-b-2 border-indigo-900 dark:border-indigo-400 pb-1">
+              Experience
+            </h4>
+            <ul className="space-y-2">
+              {resume.employment
+                .toString()
+                .split(",")
+                .map((emp, i) => (
+                  <li key={i} className="text-gray-700 dark:text-gray-300 text-sm">
+                    • {emp.trim()}
+                  </li>
+                ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  )}
 </div>
-
-      
       </div>
+      
       <div className="flex justify-end mb-4 gap-2">
         <Button title="Download PDF" onClick={handleDownloadPDF} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"/>
         <Button title={loading ? "Adding..." : "Add Resume"} onClick={handleAddResume} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition" disabled={loading}/>
