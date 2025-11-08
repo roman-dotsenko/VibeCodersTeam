@@ -5,14 +5,16 @@ export enum InputType {
     PASSWORD = 'password',
     EMAIL = 'email',
     NUMBER = 'number',
+    TEXTAREA = 'textarea',
+    DATE = 'date',
 }
 
 type InputProps = {
     className?: string
     placeholder?: string
     value?: string
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-    type: InputType
+    onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+    inputType: InputType
 }
 
 export const inputStyles =
@@ -20,5 +22,21 @@ export const inputStyles =
 
 export default function Input({...props}: InputProps) {
   const { className, placeholder = 'Input', ...rest } = props
-  return <input className={`${inputStyles} ${className ?? ''}`.trim()} placeholder={placeholder} {...rest} />
+
+  return (
+    props.inputType === InputType.TEXTAREA ? (
+      <textarea
+        className={`${inputStyles} ${className ?? ''}`.trim()}
+        placeholder={placeholder}
+        {...rest}
+      />
+    ) : (
+      <input
+        className={`${inputStyles} ${className ?? ''}`.trim()}
+        placeholder={placeholder}
+        type={props.inputType}
+        {...rest}
+      />
+    )
+  )
 }
