@@ -1,11 +1,21 @@
 from typing import Optional
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uuid
 from chat import create_chat
 from quiz import get_quiz
 
 app = FastAPI()
+
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, specify your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 chats = {}
 quizzes = {}
@@ -33,6 +43,7 @@ async def chat(req: ChatRequest):
             return {"error": "Chat not found or expired. Start a new one."}
 
     # Send user message to model
+
     response = chat.send_message(
         req.message +
         " Wait for the user's answer before continuing. "

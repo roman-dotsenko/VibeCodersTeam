@@ -34,7 +34,7 @@ public interface IResumeService
     /// </summary>
     /// <param name="resume">The resume to update</param>
     /// <returns>The updated resume</returns>
-    Task<Resume> UpdateResumeAsync(Resume resume);
+    Task<Resume> UpdateResumeAsync(Guid resumeId, Resume resume);
 
     /// <summary>
     /// Deletes a resume
