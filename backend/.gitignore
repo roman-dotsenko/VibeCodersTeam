@@ -3,6 +3,13 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# IMPORTANT: OAuth secrets and configuration
+# Never commit files with real OAuth credentials!
+**/appsettings.Development.json
+**/appsettings.Production.json
+.env.local
+.env.production.local
+
 # dotenv files
 .env
 
