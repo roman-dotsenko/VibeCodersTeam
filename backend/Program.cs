@@ -44,6 +44,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Register services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IResumeService, ResumeService>();
+builder.Services.AddScoped<IQuizService, QuizService>();
 
 // Add OpenAPI services
 builder.Services.AddOpenApi();
@@ -428,4 +429,60 @@ app.MapPut("/api/resumes/update/{resumeId:guid}", async (Guid resumeId, Resume r
 .Produces<Resume>(201)
 .Produces(400)
 .Produces(500);
+
+// Get all quizzes for a user
+app.MapGet("/api/users/{userId:guid}/quizzes", async (Guid userId, IQuizService quizService) =>
+{
+    try
+    {
+        var quizzes = await quizService.GetQuizzesByUserIdAsync(userId);
+        return Results.Ok(quizzes.Select(q => q.ToApiModel()).ToList());
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(
+            detail: ex.Message,
+            statusCode: 500,
+            title: "Error retrieving quizzes"
+        );
+    }
+})
+.WithName("GetUserQuizzes")
+.WithTags("Quizzes")
+.WithSummary("Get all quizzes for a user")
+.WithDescription("Retrieves all quizzes taken by a specific user")
+.Produces<List<Quiz>>(200)
+.Produces(500);
+
+// Add a new quiz for a user
+app.MapPost("/api/users/{userId:guid}/quizzes", async (Guid userId, Quiz quiz, IQuizService quizService) =>
+{
+    try
+    {
+        var domainQuiz = quiz.ToDomainModel();
+        var createdQuiz = await quizService.CreateQuizAsync(userId, domainQuiz);
+        var apiQuiz = createdQuiz.ToApiModel();
+        return Results.Created($"/api/users/{userId}/quizzes/{apiQuiz.QuizId}", apiQuiz);
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.BadRequest(new { message = ex.Message });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(
+            detail: ex.Message,
+            statusCode: 500,
+            title: "Error creating quiz"
+        );
+    }
+})
+.WithName("CreateQuiz")
+.WithTags("Quizzes")
+.WithSummary("Add a new quiz for a user")
+.WithDescription("Creates a new quiz entry with a score for the specified user")
+.Produces<Quiz>(201)
+.Produces(400)
+.Produces(500);
+
 app.Run();

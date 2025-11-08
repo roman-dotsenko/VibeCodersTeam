@@ -68,6 +68,7 @@ public class UserService : IUserService
                 .ThenInclude(r => r.Educations)
             .Include(u => u.Resumes)
                 .ThenInclude(r => r.Employment)
+            .Include(u => u.Quizzes)
             .FirstOrDefaultAsync(u => u.Email == email.ToLowerInvariant().Trim());
     }
 
@@ -79,6 +80,7 @@ public class UserService : IUserService
                 .ThenInclude(r => r.Educations)
             .Include(u => u.Resumes)
                 .ThenInclude(r => r.Employment)
+            .Include(u => u.Quizzes)
             .FirstOrDefaultAsync(u => u.Id == userId);
     }
 

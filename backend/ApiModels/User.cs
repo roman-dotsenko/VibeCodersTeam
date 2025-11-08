@@ -19,4 +19,9 @@ public class User
     /// Collection of resumes associated with this user
     /// </summary>
     public List<Resume> Resumes { get; set; } = new();
+
+    /// <summary>
+    /// Collection of quizzes taken by this user
+    /// </summary>
+    public List<Quiz> Quizzes { get; set; } = new();
 }

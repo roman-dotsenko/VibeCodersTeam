@@ -8,7 +8,8 @@ public static class UserMapper
         {
             Id = domain.Id,
             Email = domain.Email,
-            Resumes = domain.Resumes.Select(r => r.ToApiModel()).ToList()
+            Resumes = domain.Resumes.Select(r => r.ToApiModel()).ToList(),
+            Quizzes = domain.Quizzes.Select(q => q.ToApiModel()).ToList()
         };
     }
 
@@ -18,7 +19,8 @@ public static class UserMapper
         {
             Id = api.Id,
             Email = api.Email,
-            Resumes = api.Resumes.Select(r => r.ToDomainModel()).ToList()
+            Resumes = api.Resumes.Select(r => r.ToDomainModel()).ToList(),
+            Quizzes = api.Quizzes.Select(q => q.ToDomainModel()).ToList()
         };
     }
 }

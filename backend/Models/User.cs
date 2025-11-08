@@ -7,4 +7,6 @@ public class User
     public required string Email { get; set; }
 
     public List<Resume> Resumes { get; set; } = new();
+
+    public List<Quiz> Quizzes { get; set; } = new();
 }
