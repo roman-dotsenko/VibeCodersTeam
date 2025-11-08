@@ -10,6 +10,7 @@ export interface Resume {
     address: string;
     postCode: string;
     city: string;
+    school: string;
     dateOfBirth: string;
     driverLicense: string;
     gender: string;
@@ -31,11 +32,13 @@ export function useAddResume() {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<any>(null);
 
-  const addResume = async (body: Resume[]) => {
+  const addResume = async (userId: string | undefined, body: Resume) => {
     setLoading(true);
     setError(null);
+
+    if (!userId) return;
     try {
-      const response = await fetch(`https://job-helper-app.azurewebsites.net/api/users/${body.id}/resumes`, {
+      const response = await fetch(`https://job-helper-app.azurewebsites.net/api/users/${userId}/resumes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

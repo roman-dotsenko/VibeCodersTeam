@@ -1,11 +1,12 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAddResume, Resume } from "@/hooks/useAddResume";
 import Input, { InputType } from "@/components/ui/Input";
 import {jsPDF} from "jspdf";
 import {toPng}  from "html-to-image";
 import { useTranslations } from "next-intl";
 import Button from "@/components/ui/Button";
+import { authService, User } from "@/lib/auth";
 
 
 export default function CreateResume() {
@@ -13,6 +14,23 @@ export default function CreateResume() {
   const [openIndexes, setOpenIndexes] = useState<number[]>([]);
   const previewRef = useRef<HTMLDivElement>(null);
   const t = useTranslations('CreateResume');
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+      const cachedUser = authService.getUser();
+      
+      if (cachedUser) {
+        setUser(cachedUser);
+      }
+  
+      // Always verify with backend
+      authService.checkAuth()
+        .then((userData) => {
+          if (userData) {
+            setUser(userData);
+          }
+        })
+    }, []);
 
   const [resume, setResume] = useState({
     fullName: "",
@@ -21,6 +39,7 @@ export default function CreateResume() {
     address: "",
     linkedin: "",
     portfolio: "",
+    school: "",
     education: "",
     university: "",
     degree: "",
@@ -54,6 +73,7 @@ export default function CreateResume() {
         emailAddress: local.email,
         phoneNumber: local.phone,
         address: local.address,
+        school: local.school,
         postCode: "",
         city: "",
         dateOfBirth: "", // Add field if you have it
@@ -67,9 +87,11 @@ export default function CreateResume() {
       },
       educations: [
         {
-          education: local.education,
+          educationName: local.education,
           university: local.university,
           degree: local.degree,
+          school: local.school,
+          city: local.city,
           startDate: local.startDate,
           endDate: local.endDate,
           description: local.description,
@@ -84,7 +106,7 @@ export default function CreateResume() {
   const handleAddResume = async () => {
     try {
       const apiResume = toApiResume(resume);
-      await addResume([apiResume]);
+      await addResume(user?.id, apiResume);
       alert("Resume added successfully!");
     } catch (err) {
       alert("Failed to add resume");
@@ -136,7 +158,17 @@ export default function CreateResume() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setResume((prev) => ({ ...prev, [name]: value }));
+    
+    // Handle array fields (skills, languages, hobbies, employment, customFields)
+    const arrayFields = ['skills', 'languages', 'hobbies', 'employment', 'customFields'];
+    
+    if (arrayFields.includes(name)) {
+      // Split comma-separated values into array
+      const arrayValue = value ? value.split(',').map(item => item.trim()) : [];
+      setResume((prev) => ({ ...prev, [name]: arrayValue }));
+    } else {
+      setResume((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleDownloadPDF = async () => {
@@ -207,23 +239,30 @@ export default function CreateResume() {
               } overflow-hidden`}
             >
               <div className="px-5 pb-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-                {section.fields.map((field, i) => (
-                  <div key={i} className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      {field.label}
-                    </label>
-                    <Input
-                      inputType={field.type}
-                      placeholder={`${field.label}`}
-                      value={resume[field.name as keyof typeof resume]}
-                      onChange={handleChange}
-                      className="dark:bg-zinc-800 dark:border-gray-700"
-                      {...(field.type !== InputType.TEXTAREA
-                        ? { name: field.name }
-                        : { name: field.name })}
-                    />
-                  </div>
-                ))}
+                {section.fields.map((field, i) => {
+                  const fieldValue = resume[field.name as keyof typeof resume];
+                  const stringValue = Array.isArray(fieldValue) 
+                    ? fieldValue.join(', ') 
+                    : (fieldValue as string);
+                  
+                  return (
+                    <div key={i} className="flex flex-col">
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        {field.label}
+                      </label>
+                      <Input
+                        inputType={field.type}
+                        placeholder={`${field.label}`}
+                        value={stringValue}
+                        onChange={handleChange}
+                        className="dark:bg-zinc-800 dark:border-gray-700"
+                        {...(field.type !== InputType.TEXTAREA
+                          ? { name: field.name }
+                          : { name: field.name })}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
