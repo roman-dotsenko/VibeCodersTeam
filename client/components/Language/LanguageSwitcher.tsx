@@ -11,7 +11,7 @@ export default function LanguageSwitcher() {
   useEffect(() => {
     const cookieLocale = document.cookie
       .split('; ')
-      .find((row) => row.startsWith('NEXT_LOCALE='))
+      .find((row) => row.startsWith('NEXT_LOCALE= '))
       ?.split('=')[1]
 
     if (cookieLocale) {
@@ -27,7 +27,7 @@ export default function LanguageSwitcher() {
 
   const switchLocale = (newLocale: string) => {
     // Persist selection
-    document.cookie = `NEXT_LOCALE=${newLocale}; `
+    document.cookie = `NEXT_LOCALE=${newLocale}; path=/;`
     setLocale(newLocale)
     router.refresh()
   }

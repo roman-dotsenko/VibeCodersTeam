@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import LanguageSwitcher from '../Language/LanguageSwitcher'
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import Button from '../ui/Button';
 
 export default function Header() {
     const t = useTranslations('Header');
@@ -45,8 +46,9 @@ export default function Header() {
             </nav>
 
             <div className="flex items-center gap-3">
-                <div className="hidden sm:block">
+                <div className="hidden sm:flex sm:gap-2">
                     <LanguageSwitcher />
+                    <Button title={t('register')} to='/login' className='px-3 py-1 rounded-lg bg-indigo-600 text-white'/>
                 </div>
 
                 <div className="sm:hidden" ref={menuRef}>
@@ -69,6 +71,8 @@ export default function Header() {
                         )}
                     </button>
 
+                    
+
                     {open && (
                         <div id="mobile-menu" className="absolute right-4 top-full mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md p-3 z-50">
                             <nav className="flex flex-col gap-2">
@@ -81,6 +85,7 @@ export default function Header() {
                                 <div className="pt-2 border-t border-neutral-100 dark:border-neutral-700">
                                     <LanguageSwitcher />
                                 </div>
+                                <Button title={t('register')} to='/login' className='px-3 py-1 rounded-lg bg-indigo-600 text-white w-full text-center'/>
                             </nav>
                         </div>
                     )}
