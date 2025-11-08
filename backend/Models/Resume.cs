@@ -39,4 +39,9 @@ public class Resume
     /// Collection of hobbies
     /// </summary>
     public List<string> Hobbies { get; set; } = new();
+
+    /// <summary>
+    /// Template id. Used to select resume template when generating PDF
+    /// </summary>
+    public int TemplateId { get; set; }
 }

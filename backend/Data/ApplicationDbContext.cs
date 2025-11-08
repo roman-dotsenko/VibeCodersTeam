@@ -46,6 +46,9 @@ public class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id);
             
+            // TemplateId configuration
+            entity.Property(e => e.TemplateId).IsRequired();
+            
             // Personal details stored entirely as JSON
             entity.OwnsOne(e => e.PersonalDetails, pd =>
             {
