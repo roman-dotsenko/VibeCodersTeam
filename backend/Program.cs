@@ -11,6 +11,14 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add Application Insights telemetry
+builder.Services.AddApplicationInsightsTelemetry(options =>
+{
+    options.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
+    options.EnableAdaptiveSampling = true;
+    options.EnableQuickPulseMetricStream = true;
+});
+
 IConfigurationSection authConfiguration = builder.Configuration.GetSection("Authentication");
 
 // Configure SQL Server Database
