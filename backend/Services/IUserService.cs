@@ -34,4 +34,11 @@ public interface IUserService
     /// <param name="email">User's email address</param>
     /// <returns>Existing or newly created user</returns>
     Task<User> GetOrCreateUserAsync(string email);
+
+    /// <summary>
+    /// Deletes a user and all associated data (resumes, quizzes, etc.)
+    /// </summary>
+    /// <param name="userId">The user's unique identifier</param>
+    /// <returns>True if deleted, false if user not found</returns>
+    Task<bool> DeleteUserAsync(Guid userId);
 }

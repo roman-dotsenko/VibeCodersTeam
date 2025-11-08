@@ -23,6 +23,11 @@ public class ApplicationDbContext : DbContext
     /// </summary>
     public DbSet<Resume> Resumes { get; set; } = null!;
 
+    /// <summary>
+    /// Quizzes table
+    /// </summary>
+    public DbSet<Quiz> Quizzes { get; set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -39,12 +44,28 @@ public class ApplicationDbContext : DbContext
                   .WithOne()
                   .HasForeignKey("UserId")
                   .OnDelete(DeleteBehavior.Cascade);
+
+            // One-to-many relationship: User -> Quizzes
+            entity.HasMany(e => e.Quizzes)
+                  .WithOne()
+                  .HasForeignKey("UserId")
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Configure Quiz entity
+        modelBuilder.Entity<Quiz>(entity =>
+        {
+            entity.HasKey(e => e.QuizId);
+            entity.Property<Guid>("UserId"); // Shadow property for foreign key
         });
 
         // Configure Resume entity
         modelBuilder.Entity<Resume>(entity =>
         {
             entity.HasKey(e => e.Id);
+            
+            // TemplateId configuration
+            entity.Property(e => e.TemplateId).IsRequired();
             
             // Personal details stored entirely as JSON
             entity.OwnsOne(e => e.PersonalDetails, pd =>
