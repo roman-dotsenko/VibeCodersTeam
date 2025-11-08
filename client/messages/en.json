@@ -2,7 +2,7 @@
   "Header": {
      "dashboard": "Dashboard",
      "agent": "AI-Agent",
-     
+     "register": "Register"
   },
   "HomePage": {
     "title": "Hello world!"

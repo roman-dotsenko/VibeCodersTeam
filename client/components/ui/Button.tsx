@@ -1,18 +1,29 @@
+import Link from 'next/link'
 import React from 'react'
 
 type ButtonProps = {
     onClick?: () => void,
     className: string,
     title: string,
+    to?: string,
 }
 
-export default function Button({onClick, className, title}: ButtonProps) {
+export default function Button({onClick, className, title, to}: ButtonProps) {
   return (
-    <button
+    !to ? (
+      <button
           onClick={onClick}
           className={className}
         >
         {title}
     </button>
+    ) : (
+      <Link
+        href={to}
+        className={className}
+      >
+        {title}
+      </Link>
+    )
   )
 }
