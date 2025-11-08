@@ -68,52 +68,97 @@ export default function CreateResume() {
 
   const { addResume, loading, error, data } = useAddResume();
   // Helper to convert local resume state to API format
-  function toApiResume(local: typeof resume): Resume {
+  function toApiResume(local: typeof resume): any {
+    // Build educations array only if there's data
+    const educations = [];
+    if (local.education || local.university || local.degree || local.school) {
+      educations.push({
+        id: crypto.randomUUID(),
+        educationName: local.education || "",
+        school: local.school || local.university || "",
+        city: local.city || null,
+        startDate: local.startDate || null,
+        endDate: local.endDate || null,
+        description: local.description || null,
+      });
+    }
+
     return {
       id: crypto.randomUUID(),
       personalDetails: {
-        name: local.fullName,
-        desiredJobPosition: "", // Add field if you have it
-        emailAddress: local.email,
-        phoneNumber: local.phone,
-        address: local.address,
-        school: local.school,
-        postCode: "",
-        city: "",
-        dateOfBirth: "", // Add field if you have it
-        driverLicense: "",
-        gender: "",
-        nationality: "",
-        civilStatus: "",
-        website: local.portfolio,
-        linkedIn: local.linkedin,
+        name: local.fullName || "",
+        emailAddress: local.email || "",
+        desiredJobPosition: local.desiredJobPosition || "",
+        phoneNumber: local.phone || null,
+        address: local.address || null,
+        postCode: local.postCode || null,
+        city: local.city || null,
+        dateOfBirth: local.dateOfBirth || null,
+        driverLicense: local.driverLicense || null,
+        gender: local.gender || null,
+        nationality: local.nationality || null,
+        civilStatus: local.civilStatus || null,
+        website: local.website || null,
+        linkedIn: local.linkedin || null,
         customFields: [],
       },
-      educations: [
-        {
-          educationName: local.education,
-          university: local.university,
-          degree: local.degree,
-          school: local.school,
-          city: local.city,
-          startDate: local.startDate,
-          endDate: local.endDate,
-          description: local.description,
-        },
-      ],
-      employment: [],
-      skills: [],
-      languages: [],
-      hobbies: [],
+      educations: educations,
+      employment: Array.isArray(local.employment) 
+        ? local.employment.toString().split(",").filter(e => e.trim()).map(emp => ({
+            id: crypto.randomUUID(),
+            jobTitle: emp.trim(),
+            employer: "",
+            city: null,
+            startDate: null,
+            endDate: null,
+            description: null,
+          }))
+        : [],
+      skills: Array.isArray(local.skills)
+        ? local.skills.toString().split(",").filter(s => s.trim()).map(skill => ({
+            name: skill.trim(),
+            level: {
+              value: 0,
+              description: "",
+            },
+          }))
+        : [],
+      languages: Array.isArray(local.languages)
+        ? local.languages.toString().split(",").filter(l => l.trim()).map(lang => ({
+            name: lang.trim(),
+            level: {
+              value: 0,
+              description: "",
+            },
+          }))
+        : [],
+      hobbies: Array.isArray(local.hobbies)
+        ? local.hobbies.toString().split(",").filter(h => h.trim()).map(h => h.trim())
+        : [],
     };
   }
   const handleAddResume = async () => {
+    if (!user?.id) {
+      alert("Please log in to save your resume");
+      return;
+    }
+
+    if (!resume.fullName || !resume.email) {
+      alert("Please fill in at least your name and email");
+      return;
+    }
+
     try {
       const apiResume = toApiResume(resume);
-      await addResume(user?.id, apiResume);
-      alert("Resume added successfully!");
-    } catch (err) {
-      alert("Failed to add resume");
+      console.log("Submitting resume:", apiResume);
+      const result = await addResume(user?.id, apiResume);
+      alert(`Resume "${resume.fullName}" added successfully! ID: ${result?.id || 'N/A'}`);
+      
+      // Optionally reset the form
+      // setResume({ ... initial state ... });
+    } catch (err: any) {
+      console.error("Error adding resume:", err);
+      alert(`Failed to add resume: ${err?.message || 'Unknown error'}`);
     }
   };
 
@@ -148,6 +193,7 @@ export default function CreateResume() {
       title: t('education'),
       fields: [
         { label: t('education'), name: "education", type: InputType.TEXT },
+        { label: "School", name: "school", type: InputType.TEXT },
         { label: t('university'), name: "university", type: InputType.TEXT },
         { label: t('degree'), name: "degree", type: InputType.TEXT },
         { label: t('startDate'), name: "startDate", type: InputType.DATE },
