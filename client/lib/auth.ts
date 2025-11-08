@@ -9,7 +9,7 @@ export interface User {
 }
 
 const getBackendUrl = () => {
-  return process.env.NEXT_PUBLIC_BACKEND_URL || 'https://localhost:7018';
+  return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:7018';
 };
 
 export const authService = {

@@ -12,7 +12,7 @@ export default function LoginPage() {
   useEffect(() => {
     // Check if user is already logged in by calling the backend
     const checkAuth = async () => {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://localhost:7018';
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:7018';
       try {
         const response = await fetch(`${backendUrl}/api/auth/me`, {
           credentials: 'include', // Important for cookies
@@ -38,7 +38,7 @@ export default function LoginPage() {
     setIsLoading(true);
     setError(null);
     // Redirect to backend OAuth endpoint
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://localhost:7018';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:7018';
     window.location.href = `${backendUrl}/api/auth/login`;
   };
 

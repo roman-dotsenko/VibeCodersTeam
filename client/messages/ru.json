@@ -1,7 +1,8 @@
 {
   "Header": {
-     "dashboard": "Dashboard",
-     "agent": "AI-Agent"
+     "dashboard": "Панель управления",
+     "agent": "AI-Агент",
+     "register": "Регистрация"
   },
   "HomePage": {
     "title": "Hello world!"
