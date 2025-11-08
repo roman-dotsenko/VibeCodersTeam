@@ -485,4 +485,46 @@ app.MapPost("/api/users/{userId:guid}/quizzes", async (Guid userId, Quiz quiz, I
 .Produces(400)
 .Produces(500);
 
+// Delete a user and all associated data
+app.MapDelete("/api/users/{userId:guid}", async (Guid userId, IUserService userService) =>
+{
+    try
+    {
+        var deleted = await userService.DeleteUserAsync(userId);
+        
+        if (!deleted)
+        {
+            return Results.NotFound(new { message = $"User with ID {userId} not found" });
+        }
+
+        return Results.Ok(new { 
+            success = true, 
+            message = "User and all associated data deleted successfully" 
+        });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.Problem(
+            detail: ex.Message,
+            statusCode: 500,
+            title: "Error deleting user"
+        );
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(
+            detail: ex.Message,
+            statusCode: 500,
+            title: "Error deleting user"
+        );
+    }
+})
+.WithName("DeleteUser")
+.WithTags("Users")
+.WithSummary("Delete a user and all associated data")
+.WithDescription("Permanently deletes a user and all their associated data including resumes and quizzes. This action cannot be undone.")
+.Produces(200)
+.Produces(404)
+.Produces(500);
+
 app.Run();

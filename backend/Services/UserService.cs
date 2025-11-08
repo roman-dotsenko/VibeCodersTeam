@@ -98,4 +98,38 @@ public class UserService : IUserService
         _logger.LogInformation("Creating new user with email {Email}", email);
         return await CreateUserAsync(email);
     }
+
+    /// <inheritdoc/>
+    public async Task<bool> DeleteUserAsync(Guid userId)
+    {
+        try
+        {
+            var user = await _context.Users
+                .Include(u => u.Resumes)
+                .Include(u => u.Quizzes)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                _logger.LogWarning("Attempted to delete non-existent user {UserId}", userId);
+                return false;
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation(
+                "Deleted user {UserId} with {ResumeCount} resumes and {QuizCount} quizzes",
+                userId,
+                user.Resumes.Count,
+                user.Quizzes.Count
+            );
+            return true;
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while deleting user {UserId}", userId);
+            throw new InvalidOperationException("Failed to delete user", ex);
+        }
+    }
 }
