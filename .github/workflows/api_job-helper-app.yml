@@ -1,12 +1,12 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - jobhelper-fe
+name: Build and deploy ASP.Net Core app to Azure Web App - job-helper-app
 
 on:
   push:
     branches:
-      - frontend
+      - api
   workflow_dispatch:
 
 jobs:
@@ -18,35 +18,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
         with:
-          node-version: '22.x'
+          dotnet-version: '10.x'
 
-      - name: npm install and build
-        working-directory: ./client
-        run: |
-          npm ci
-          npm run build
-      
-      - name: Prepare deployment package
-        shell: bash
-        run: |
-          mkdir -p deploy
-          cp -r client/.next/standalone/* deploy/
-          cp -r client/.next/static deploy/.next/static
-          cp -r client/public deploy/public || true
-          cp client/package*.json deploy/
-          cp client/web.config deploy/ || true
-      
+      - name: Build with dotnet
+        run: dotnet build ./backend/JobHelper.csproj --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish ./backend/JobHelper.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: node-app
-          path: ./deploy
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     permissions:
       id-token: write #This is required for requesting the JWT
@@ -56,21 +46,22 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: node-app
+          name: .net-app
       
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C375906330744C81BED678C80820F6E4 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_AADC1791646B44D79D372A19A47BA970 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_128240CCA10341AC99AC5ED6D40DDD8D }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E683A346DEA741CB9CCA988B4209B9AE }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_BA3BEB5673C94DB1A474134F0FB9C19B }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_14DC0E39E11C490AAC2C47CA85A0262C }}
 
-      - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
+      - name: Deploy to Azure Web App
         id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
         with:
-          app-name: 'jobhelper-fe'
+          app-name: 'job-helper-app'
           slot-name: 'Production'
           package: .
-          startup-command: 'node server.js'
           
+
+
